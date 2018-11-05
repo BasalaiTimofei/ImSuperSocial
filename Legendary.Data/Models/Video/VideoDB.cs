@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Legendary.Data.Models.Video
 {
-    class VideoDB
+    public class VideoDB
     {
+        public string VideoId { get; set; }
+        public string VideoName { get; set; }
+        public string ImgId { get; set; }
+        public byte Rating { get; set; }
+        public DateTime DateCreate { get; set; }
     }
 }
