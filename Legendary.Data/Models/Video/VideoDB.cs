@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Legendary.Data.Models.Video
 {
@@ -7,8 +8,13 @@ namespace Legendary.Data.Models.Video
         public string Id { get; set; }
         public string Name { get; set; }
         public ICollection<CategoryDb> Categories { get; set; }
-        public virtual VideoInformationDb Information { get; set; }
-        public virtual VideoImgDb Img { get; set; }
         public byte Rating { get; set; }
+
+        public string LinkOnVideo { get; set; }
+        public virtual ICollection<CommentDb> Comments { get; set; }
+        public DateTime DateCreate { get; set; }
+
+        public string ImgLink { get; set; }
+        public string GifLink { get; set; }
     }
 }

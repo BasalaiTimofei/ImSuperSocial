@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Legendary.Data.Models.User;
 
 namespace Legendary.Data.Models.Video
@@ -7,7 +8,7 @@ namespace Legendary.Data.Models.Video
     {
         public string Id { get; set; }
         public virtual UserDb User { get; set; }
-        public virtual VideoInformationDb VideoInformation { get; set; }
+        public virtual VideoDb Video { get; set; }
         public string Comment { get; set; }
         public DateTime DateCreate { get; set; }
     }

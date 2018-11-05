@@ -40,6 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,14 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\LegendaryContext.cs" />
     <Compile Include="Models\Actor\ActorDb.cs" />
-    <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Context\Configuration.cs" />
     <Compile Include="Models\User\UserDb.cs" />
     <Compile Include="Models\Video\CategoryDb.cs" />
     <Compile Include="Models\Video\CommentDb.cs" />
     <Compile Include="Models\Video\VideoDb.cs" />
-    <Compile Include="Models\Video\VideoImgDb.cs" />
-    <Compile Include="Models\Video\VideoInformationDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
