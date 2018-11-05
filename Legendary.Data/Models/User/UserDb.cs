@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Legendary.Data.Models.User
 {
-    class UserDb
+    public class UserDb
     {
     }
 }

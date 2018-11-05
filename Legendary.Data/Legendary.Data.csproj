@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\User\UserDb.cs" />
+    <Compile Include="Models\Video\CategoryDb.cs" />
+    <Compile Include="Models\Video\CommentDb.cs" />
+    <Compile Include="Models\Video\VideoDb.cs" />
+    <Compile Include="Models\Video\VideoImgDb.cs" />
+    <Compile Include="Models\Video\VideoInformationDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
