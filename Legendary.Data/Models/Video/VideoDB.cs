@@ -1,11 +1,14 @@
-﻿namespace Legendary.Data.Models.Video
+﻿using System.Collections.Generic;
+
+namespace Legendary.Data.Models.Video
 {
     public class VideoDb
     {
-        public string VideoId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public string InformationId { get; set; }
-        public string ImgId { get; set; }
+        public ICollection<CategoryDb> Categories { get; set; }
+        public virtual VideoInformationDb Information { get; set; }
+        public virtual VideoImgDb Img { get; set; }
         public byte Rating { get; set; }
     }
 }

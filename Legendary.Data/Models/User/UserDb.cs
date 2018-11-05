@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Legendary.Data.Models.User
+﻿namespace Legendary.Data.Models.User
 {
     public class UserDb
     {

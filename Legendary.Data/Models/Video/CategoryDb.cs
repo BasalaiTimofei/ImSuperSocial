@@ -4,8 +4,8 @@ namespace Legendary.Data.Models.Video
 {
     public class CategoryDb
     {
-        public string CategoryId { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<string> VideoId { get; set; }
+        public virtual ICollection<VideoDb> Video { get; set; }
     }
 }

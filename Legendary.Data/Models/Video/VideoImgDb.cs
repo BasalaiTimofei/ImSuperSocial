@@ -8,8 +8,9 @@ namespace Legendary.Data.Models.Video
 {
     public class VideoImgDb
     {
-        public string ImgId { get; set; }
+        public string Id { get; set; }
         public string ImgLink { get; set; }
         public string GifLink { get; set; }
+        public virtual VideoDb Video { get; set; }
     }
 }
