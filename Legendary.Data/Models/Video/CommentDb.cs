@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Legendary.Data.Models.User;
 
 namespace Legendary.Data.Models.Video

@@ -16,7 +16,7 @@ namespace Legendary.Data.Context
 
             Property(p => p.Name).IsRequired().HasMaxLength(100).IsUnicode();
             Property(p => p.Rating).IsRequired();
-            Property(p => p.LinkOnVideo).IsRequired();
+            Property(p => p.ReferenceOnVideo).IsRequired();
             Property(p => p.DateCreate).IsRequired().HasColumnType("datetime2");
             Property(p => p.ImgLink).IsRequired();
             Property(p => p.GifLink).IsRequired();
