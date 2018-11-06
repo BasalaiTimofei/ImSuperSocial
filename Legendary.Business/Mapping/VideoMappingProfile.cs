@@ -10,6 +10,7 @@ namespace Legendary.Business.Mapping
         {
             CreateMap<VideoDb, VideoItemDto>();
             CreateMap<VideoDb, VideoListDto>();
+            CreateMap<VideoDb, VideoFullModel>();
         }
     }
 }

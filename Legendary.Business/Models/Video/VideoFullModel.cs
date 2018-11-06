@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Legendary.Data.Models.Video
+namespace Legendary.Business.Models.Video
 {
-    public class VideoDb
+    public class VideoFullModel
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public ICollection<CategoryDb> Categories { get; set; }
-
-        public ICollection<RatingDb> Rating { get; set; }
+        public ICollection<CategoryDto> Categories { get; set; }
+        public double Rating { get; set; }
 
         public string ReferenceOnVideo { get; set; }
-        public virtual ICollection<CommentDb> Comments { get; set; }
         public DateTime DateCreate { get; set; }
 
         public string ImgLink { get; set; }

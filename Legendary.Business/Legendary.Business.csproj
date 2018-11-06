@@ -48,14 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IVideoItemService.cs" />
+    <Compile Include="Interfaces\IVideoListService.cs" />
+    <Compile Include="Interfaces\IVideoService.cs" />
     <Compile Include="Mapping\CategoryMappingProfile.cs" />
     <Compile Include="Mapping\CommentMappingProfile.cs" />
     <Compile Include="Mapping\VideoMappingProfile.cs" />
     <Compile Include="Models\CategoryDto.cs" />
     <Compile Include="Models\CommentDto.cs" />
+    <Compile Include="Models\Video\VideoFullModel.cs" />
     <Compile Include="Models\Video\VideoItemDto.cs" />
     <Compile Include="Models\Video\VideoListDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\VideoItemService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Legendary.Data\Legendary.Data.csproj">

@@ -13,8 +13,7 @@ namespace Legendary.Business.Mapping
     {
         public CategoryMappingProfile()
         {
-            CreateMap<CategoryDb, CategoryDto>()
-                .ForMember(m => m.VideoId, opt => opt.MapFrom(m => m.Video.))
+            CreateMap<CategoryDb, CategoryDto>().ReverseMap();
         }
     }
 }

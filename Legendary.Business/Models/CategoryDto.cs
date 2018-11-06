@@ -8,6 +8,6 @@ namespace Legendary.Business.Models
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public ICollection<VideoDb> VideoId { get; set; }
+        public ICollection<VideoDb> Video { get; set; }
     }
 }
