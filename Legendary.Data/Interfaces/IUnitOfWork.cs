@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Legendary.Data.Models.Video;
 
 namespace Legendary.Data.Interfaces
 {
-    interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        IVideoRepository VideoRepository { get; }
+        IRepository<VideoDb> VideoRepository { get; }
+        IRepository<CommentDb> CommentRepository { get; }
+        IRepository<CategoryDb> CategoryRepository { get; }
         void Save();
     }
 }
