@@ -4,7 +4,6 @@ using AutoMapper;
 using Legendary.Business.Interfaces;
 using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
-using Legendary.Data.Models.Video;
 
 namespace Legendary.Business.Services
 {
@@ -43,6 +42,11 @@ namespace Legendary.Business.Services
             var vid = dbVideo[0];
             _uow.VideoRepository.Update(Mapper.Map(video, vid));
             //TODO Возможно надо что-то возвращать + добавить SaveChangers()
+        }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
         }
     }
 }

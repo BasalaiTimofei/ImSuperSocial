@@ -22,6 +22,7 @@ namespace Legendary.Business.Services
             var dbVideo = _uow.VideoRepository.GetAll();
             var dtoVideo = dbVideo.Select(s => Mapper.Map<VideoListDto>(s)).ToList();
 
+            _uow.Save();
             return dtoVideo;
         }
 
@@ -31,16 +32,25 @@ namespace Legendary.Business.Services
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
+            _uow.Save();
             return Mapper.Map<VideoDb, VideoListDto>(video);
         }
 
         public VideoListDto GetRandomVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll().ToArray();
-            var rnd = new Random().Next(0, dbVideo.Count());
-            var video = dbVideo[rnd];
+            if (dbVideo.Length == 0)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
 
+            var video = dbVideo[new Random().Next(0, dbVideo.Count())];
+
+            _uow.Save();
             return Mapper.Map<VideoDb, VideoListDto>(video);
+        }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
         }
     }
 }

@@ -7,5 +7,6 @@ namespace Legendary.Business.Interfaces
     {
         VideoItemDto GetVideoItem(string id);
         VideoItemDto UpdateVideoItem(VideoItemDto videoItem);
+        void Dispose();
     }
 }

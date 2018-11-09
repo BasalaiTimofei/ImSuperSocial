@@ -28,5 +28,10 @@ namespace Legendary.Business.Services
         {
             throw new NotImplementedException();
         }
+
+        public void Dispose()
+        {
+            _uow.Dispose();
+        }
     }
 }

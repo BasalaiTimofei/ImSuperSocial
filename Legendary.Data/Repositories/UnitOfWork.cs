@@ -5,7 +5,7 @@ using Legendary.Data.Models.Video;
 
 namespace Legendary.Data.Repositories
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly LegendaryContext _legendaryContext;
         private VideoRepository _videoRepository;

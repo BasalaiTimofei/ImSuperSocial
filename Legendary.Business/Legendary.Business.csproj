@@ -34,6 +34,9 @@
     <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -48,12 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessModel\AvgRating.cs" />
+    <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IVideoItemService.cs" />
     <Compile Include="Interfaces\IVideoListService.cs" />
     <Compile Include="Interfaces\IVideoService.cs" />
-    <Compile Include="Mapping\CategoryMappingProfile.cs" />
-    <Compile Include="Mapping\CommentMappingProfile.cs" />
-    <Compile Include="Mapping\VideoMappingProfile.cs" />
+    <Compile Include="Infrastructure\Mapping\CategoryMappingProfile.cs" />
+    <Compile Include="Infrastructure\Mapping\CommentMappingProfile.cs" />
+    <Compile Include="Infrastructure\Mapping\VideoMappingProfile.cs" />
     <Compile Include="Models\CategoryDto.cs" />
     <Compile Include="Models\CommentDto.cs" />
     <Compile Include="Models\Video\VideoFullModel.cs" />
@@ -61,6 +66,8 @@
     <Compile Include="Models\Video\VideoListDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\VideoItemService.cs" />
+    <Compile Include="Services\VideoListService.cs" />
+    <Compile Include="Services\VideoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Legendary.Data\Legendary.Data.csproj">

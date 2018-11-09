@@ -8,5 +8,6 @@ namespace Legendary.Business.Interfaces
         List<VideoListDto> GetAllVideoList();
         VideoListDto GetVideoList(string id);
         VideoListDto GetRandomVideoList();
+        void Dispose();
     }
 }

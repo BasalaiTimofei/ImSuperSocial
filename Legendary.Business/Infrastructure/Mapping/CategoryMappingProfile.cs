@@ -2,7 +2,7 @@
 using Legendary.Business.Models;
 using Legendary.Data.Models.Video;
 
-namespace Legendary.Business.Mapping
+namespace Legendary.Business.Infrastructure.Mapping
 {
     public class CategoryMappingProfile : Profile
     {
