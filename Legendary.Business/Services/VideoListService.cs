@@ -37,7 +37,7 @@ namespace Legendary.Business.Services
         public VideoListDto GetRandomVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll().ToArray();
-            var rnd = new Random().Next(0, dbVideo.Count() - 1);
+            var rnd = new Random().Next(0, dbVideo.Count());
             var video = dbVideo[rnd];
 
             return Mapper.Map<VideoDb, VideoListDto>(video);
