@@ -23,6 +23,9 @@ namespace Legendary.Data.Context
             modelBuilder.Configurations.Add(new VideoDbConfiguration());
             modelBuilder.Configurations.Add(new CategoryDbConfiguration());
             modelBuilder.Configurations.Add(new CommentDbConfiguration());
+            modelBuilder.Configurations.Add(new RatingDbConfiguration());
+
+            
         }
     }
 }

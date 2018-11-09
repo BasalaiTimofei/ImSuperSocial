@@ -8,9 +8,11 @@ namespace Legendary.Business.Mapping
     {
         public VideoMappingProfile()
         {
-            CreateMap<VideoDb, VideoItemDto>();
             CreateMap<VideoDb, VideoListDto>();
-            CreateMap<VideoDb, VideoFullModel>();
+            CreateMap<VideoDb, VideoItemDto>()
+                .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories));
+            CreateMap<VideoDb, VideoFullModel>()
+                .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories));
         }
     }
 }

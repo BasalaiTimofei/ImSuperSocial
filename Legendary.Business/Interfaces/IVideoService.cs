@@ -6,6 +6,6 @@ namespace Legendary.Business.Interfaces
     {
         void CreateVideo(VideoFullModel video);
         void DeleteVideo(string id);
-        void UpdateVideo(VideoFullModel video);
+        void UpdateVideo(string videoId, VideoFullModel video);
     }
 }

@@ -6,6 +6,7 @@ namespace Legendary.Business.Interfaces
     public interface IVideoListService
     {
         List<VideoListDto> GetAllVideoList();
-        VideoListDto GetListDto(string id);
+        VideoListDto GetVideoList(string id);
+        VideoListDto GetRandomVideoList();
     }
 }
