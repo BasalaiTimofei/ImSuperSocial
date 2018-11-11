@@ -123,12 +123,125 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void AddVideo()
+        [Ignore("Ignor")]
+        public void AddVideo_VideoFullModel()
         {
-            //_mockUow.Setup(repo => repo.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
-            //    .Returns(ICollection<VideoDb>)
-            Assert.True(true);
         }
+
+        [Test]
+        [Ignore("Ignor")]
+        public void DeleteVideo_VideoFullModel()
+        {
+        }
+
+        [Test]
+        [Ignore("Ignor")]
+        public void UpdateVideo_VideoFullModel()
+        {
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_GoodId_Return_Video_VideoFullModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = videoFullService.GetVideo(id);
+
+                Assert.That(result, Is.TypeOf(typeof(VideoFullModel)));
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_NullId_Return_Null_VideoFullModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoFullService.GetVideo(null));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_AnyId_Return_Null_VideoFullModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoFullService.GetVideo(It.IsAny<string>()));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_GoodId_Return_Null_VideoFullModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _videoDb = null;
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoFullService.GetVideo(id));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetAllVideo_Return_AllVideo_VideoFullModel()
+        {
+            _selectCollectionVideo.Add(_videoDb);
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName1",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow
+            });
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = videoFullService.GetListVideo();
+
+                Assert.That(result, Is.TypeOf(typeof(List<VideoFullModel>)));
+            }
+        }
+
+        [Test]
+        public void GetAllVideo_Return_Null_VideoFullModel()
+        {
+            _selectCollectionVideo = null;
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            using (var videoFullService = new VideoService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoFullService.GetListVideo());
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+
 
         [Test]
         public void GetVideo_ById_Get_GoodId_Return_Video_VideoListModel()
@@ -146,7 +259,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_IdNull_Return_Null_VedeoListModel()
+        public void GetVideo_ById_Get_NullId_Return_Null_VedeoListModel()
         {
             var id = Guid.NewGuid().ToString();
             _mockUow.Setup(s => s.VideoRepository.Get(id))
@@ -161,7 +274,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_GoodId_Return_Null_VedeoListModel()
+        public void GetVideo_ById_Get_AnyId_Return_Null_VedeoListModel()
         {
             var id = Guid.NewGuid().ToString();
             _mockUow.Setup(s => s.VideoRepository.Get(id))
@@ -170,6 +283,22 @@ namespace Legendary.Business.Tests
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
                 var result = Assert.Throws<NullReferenceException>(() => videoListService.GetVideoList(It.IsAny<string>()));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_GoodId_Return_Null_VedeoListModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _videoDb = null;
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoListService.GetVideoList(id));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -267,6 +396,67 @@ namespace Legendary.Business.Tests
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
                 var result = Assert.Throws<NullReferenceException>(() => videoListService.GetRandomVideoList());
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_GoodId_Return_Video_VedeoItemModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoItemService = new VideoItemService(_mockUow.Object, _mapper))
+            {
+                var result = videoItemService.GetVideoItem(id);
+
+                Assert.That(result, Is.TypeOf(typeof(VideoItemDto)));
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_NullId_Return_Null_VedeoItemModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoItemService = new VideoItemService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoItemService.GetVideoItem(null));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_AnyId_Return_Null_VedeoItemModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoItemService = new VideoItemService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoItemService.GetVideoItem(It.IsAny<string>()));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ById_Get_GoodId_Return_Null_VedeoItemModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _videoDb = null;
+            _mockUow.Setup(s => s.VideoRepository.Get(id))
+                .Returns(_videoDb);
+
+            using (var videoItemService = new VideoItemService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoItemService.GetVideoItem(id));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }

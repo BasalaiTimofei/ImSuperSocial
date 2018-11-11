@@ -30,7 +30,9 @@ namespace Legendary.Business.Infrastructure.Mapping
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
                 .ReverseMap()
-                .ForMember(q => q.Rating, opt => opt.Ignore());
+                .ForMember(q => q.Rating, opt => opt.Ignore())
+                .ForMember(q => q.Comments, opt => opt.Ignore())
+                .ForMember(q => q.DateCreate, opt => opt.Ignore());
         }
     }
 }
