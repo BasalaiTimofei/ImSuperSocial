@@ -9,48 +9,56 @@ using Legendary.Data.Models.Video;
 
 namespace Legendary.Business.Services
 {
-    public class VideoListService : IVideoListService
+    public class VideoListService : IVideoListService, IDisposable
     {
         private readonly IUnitOfWork _uow;
-        public VideoListService(IUnitOfWork uow)
+        private readonly IMapper _mapper;
+        public VideoListService(IUnitOfWork uow, IMapper mapper)
         {
+            _mapper = mapper;
             _uow = uow;
         }
 
         public List<VideoListDto> GetAllVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll();
-            var dtoVideo = dbVideo.Select(s => Mapper.Map<VideoListDto>(s)).ToList();
+            if (dbVideo == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            _uow.Save();
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+
             return dtoVideo;
         }
 
         public VideoListDto GetVideoList(string id)
         {
+            if (id == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
             var video = _uow.VideoRepository.Get(id);
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            _uow.Save();
-            return Mapper.Map<VideoDb, VideoListDto>(video);
+            return _mapper.Map<VideoDb, VideoListDto>(video);
         }
 
         public VideoListDto GetRandomVideoList()
         {
-            var dbVideo = _uow.VideoRepository.GetAll().ToArray();
+            var dbVideo = _uow.VideoRepository.GetAll() != null 
+                ? _uow.VideoRepository.GetAll().ToArray()
+                : throw new NullReferenceException();//RequestedResourceNotFoundException();
+
             if (dbVideo.Length == 0)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var video = dbVideo[new Random().Next(0, dbVideo.Count())];
+            var video = dbVideo[new Random().Next(0, dbVideo.Length)];
 
-            _uow.Save();
-            return Mapper.Map<VideoDb, VideoListDto>(video);
+            return _mapper.Map<VideoDb, VideoListDto>(video);
         }
 
         public void Dispose()
         {
             _uow.Dispose();
         }
+
     }
 }

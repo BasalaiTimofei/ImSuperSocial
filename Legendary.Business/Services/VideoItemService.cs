@@ -24,7 +24,7 @@ namespace Legendary.Business.Services
             return Mapper.Map<VideoDb, VideoItemDto>(video);
         }
 
-        public VideoItemDto UpdateVideoItem(VideoItemDto videoItem)
+        public VideoItemDto UpdateVideoItem(string videoId, VideoItemDto videoItem)
         {
             throw new NotImplementedException();
         }

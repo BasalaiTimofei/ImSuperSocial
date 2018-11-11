@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Legendary.Data", "Legendary
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Legendary.Business", "Legendary.Business\Legendary.Business.csproj", "{19EFCFCE-C158-40AB-8052-49221E70F019}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Legendary.Business.Tests", "Legendary.Business.Tests\Legendary.Business.Tests.csproj", "{D2BCE9DE-F99A-4214-B379-0318EE40964C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{19EFCFCE-C158-40AB-8052-49221E70F019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19EFCFCE-C158-40AB-8052-49221E70F019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19EFCFCE-C158-40AB-8052-49221E70F019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2BCE9DE-F99A-4214-B379-0318EE40964C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2BCE9DE-F99A-4214-B379-0318EE40964C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2BCE9DE-F99A-4214-B379-0318EE40964C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2BCE9DE-F99A-4214-B379-0318EE40964C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

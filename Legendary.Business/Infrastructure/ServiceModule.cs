@@ -1,4 +1,7 @@
 ﻿using System;
+using AutoMapper;
+using Legendary.Business.Infrastructure.Mapping;
+using Legendary.Business.Services;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Repositories;
@@ -18,6 +21,18 @@ namespace Legendary.Business.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(_legendaryContext);
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new VideoMappingProfile()))))
+                .WhenInjectedInto<VideoListService>();
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new VideoMappingProfile()))))
+                .WhenInjectedInto<VideoItemService>();
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new VideoMappingProfile()))))
+                .WhenInjectedInto<VideoService>();
         }
     }
 }

@@ -15,10 +15,12 @@ namespace Legendary.Business.Infrastructure.Mapping
                 .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
                 .ForMember(q => q.AvgRating,
                     opt => opt.MapFrom(w =>
-                        w.Rating.Count == 0 ? 50 
-                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) > 50 ? 100 
+                        w.Rating.Count == 0 ? 50
+                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) > 50 ? 100
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
-                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50));
+                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
+                .ReverseMap()
+                .ForMember(q => q.Rating, opt => opt.Ignore());
             CreateMap<VideoDb, VideoFullModel>()
                 .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
                 .ForMember(q => q.AvgRating,
@@ -26,7 +28,9 @@ namespace Legendary.Business.Infrastructure.Mapping
                         w.Rating.Count == 0 ? 50
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) > 50 ? 100
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
-                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50));
+                        : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
+                .ReverseMap()
+                .ForMember(q => q.Rating, opt => opt.Ignore());
         }
     }
 }
