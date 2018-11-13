@@ -17,6 +17,7 @@ namespace Legendary.Business.Services.Video
             _uow = uow;
         }
 
+        /// <inheritdoc/>
         public VideoItemDto GetVideoItem(string id)
         {
             var video = _uow.VideoRepository.Get(id);

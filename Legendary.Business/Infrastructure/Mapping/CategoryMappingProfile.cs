@@ -8,8 +8,7 @@ namespace Legendary.Business.Infrastructure.Mapping
     {
         public CategoryMappingProfile()
         {
-            CreateMap<CategoryDb, CategoryDto>()
-                .ForMember(q => q.Video, opt => opt.MapFrom(w => w.Video));
+            CreateMap<CategoryDb, CategoryDto>();
         }
     }
 }

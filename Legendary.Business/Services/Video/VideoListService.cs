@@ -19,6 +19,7 @@ namespace Legendary.Business.Services.Video
             _uow = uow;
         }
 
+        /// <inheritdoc/>
         public List<VideoListDto> GetAllVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll();
@@ -30,6 +31,7 @@ namespace Legendary.Business.Services.Video
             return dtoVideo;
         }
 
+        /// <inheritdoc/>
         public VideoListDto GetVideoList(string id)
         {
             if (id == null)
@@ -41,28 +43,30 @@ namespace Legendary.Business.Services.Video
             return _mapper.Map<VideoDb, VideoListDto>(video);
         }
 
+        /// <inheritdoc/>
         public List<VideoListDto> GetVideoByActor(string actorId)
         {
-            //TODO Спросить у Саши как это написать через VideoRepository
             if (actorId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dbVideo = _uow.ActorRepository.Get(actorId).Video.ToList();
+            var dbVideo = _uow.VideoRepository.Find(a =>
+                    a.Actor.Select(s => string.Equals(s.Id, actorId, StringComparison.CurrentCultureIgnoreCase))
+                        .First())
+                .ToList();
+            if (dbVideo.Count == 0)
+                //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
 
             return dtoVideo;
         }
 
+        /// <inheritdoc/>
         public VideoListDto GetRandomVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll().ToArray(); 
-            //TODO Спросить у Саши нужна ли тут проверка
-            /* 
-                != null 
-                ? _uow.VideoRepository.GetAll().ToArray()
-                : throw new NullReferenceException();//RequestedResourceNotFoundException();
-            */
+            
             if (dbVideo.Length == 0)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 

@@ -1,7 +1,7 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Legendary.Business.Infrastructure.Mapping;
 using Legendary.Business.Services;
+using Legendary.Business.Services.Video;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Repositories;

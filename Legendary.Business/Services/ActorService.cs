@@ -19,6 +19,8 @@ namespace Legendary.Business.Services
             _uow = uow;
         }
 
+
+        /// <inheritdoc/>
         public void CreateActor(ActorDto actor)
         {
             //TODO Проверить роль
@@ -37,6 +39,7 @@ namespace Legendary.Business.Services
             _uow.Save();
         }
 
+        /// <inheritdoc/>
         public void UpadteActor(string actorId, ActorDto actor)
         {
             //TODO Проверить роль
@@ -53,7 +56,8 @@ namespace Legendary.Business.Services
             _uow.Save();
         }
 
-            public void DeleteActor(string id)
+        /// <inheritdoc/>
+        public void DeleteActor(string id)
         {
             //TODO Проверить роль
 
@@ -64,6 +68,7 @@ namespace Legendary.Business.Services
             _uow.Save();
         }
 
+        /// <inheritdoc/>
         public ActorDto GetActor(string id)
         {
             if (id == null)
@@ -76,6 +81,7 @@ namespace Legendary.Business.Services
             return _mapper.Map<ActorDb, ActorDto>(actor);
         }
 
+        /// <inheritdoc/>
         public List<ActorDto> GetAllActors()
         {
             var actors = _uow.ActorRepository.GetAll();

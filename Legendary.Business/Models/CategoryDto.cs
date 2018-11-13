@@ -13,9 +13,21 @@ namespace Legendary.Business.Models
         /// Gets or sets Name.
         /// </summary>
         public string Name { get; set; }
-        /// <summary>
-        /// Gets or sets collection Video.
-        /// </summary>
-        public virtual ICollection<VideoFullModel> Video { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var dto = obj as CategoryDto;
+            return dto != null &&
+                   Id == dto.Id &&
+                   Name == dto.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -1919740922;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            return hashCode;
+        }
     }
 }

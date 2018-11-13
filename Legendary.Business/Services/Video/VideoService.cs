@@ -13,13 +13,13 @@ namespace Legendary.Business.Services.Video
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-
         public VideoService(IUnitOfWork uow, IMapper mapper)
         {
             _mapper = mapper;
             _uow = uow;
         }
 
+        /// <inheritdoc/>
         public VideoFullModel CreateVideo(VideoFullModel video)
         {
             //TODO Проверить роль
@@ -39,6 +39,7 @@ namespace Legendary.Business.Services.Video
             return _mapper.Map<VideoDb, VideoFullModel>(dbVideo);
         }
 
+        /// <inheritdoc/>
         public VideoFullModel GetVideo(string id)
         {
             //TODO Проверить роль
@@ -53,6 +54,7 @@ namespace Legendary.Business.Services.Video
             return _mapper.Map<VideoDb, VideoFullModel>(dbVideo);
         }
 
+        /// <inheritdoc/>
         public List<VideoFullModel> GetListVideo()
         {
             //TODO Проверить роль
@@ -66,6 +68,7 @@ namespace Legendary.Business.Services.Video
             return dtoVideo;
         }
 
+        /// <inheritdoc/>
         public void DeleteVideo(string id)
         {            
             //TODO Проверить роль
@@ -77,6 +80,7 @@ namespace Legendary.Business.Services.Video
             _uow.Save();
         }
 
+        /// <inheritdoc/>
         public VideoFullModel UpdateVideo(string videoId, VideoFullModel video)
         {
             //TODO Проверить роль
