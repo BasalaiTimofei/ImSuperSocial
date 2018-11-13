@@ -18,6 +18,10 @@ namespace Legendary.Business.Models.Video
         /// </summary>
         public virtual ICollection<CategoryDto> Categories { get; set; }
         /// <summary>
+        /// Gets or sets collection Actors.
+        /// </summary>
+        public virtual ICollection<ActorDto> Actors { get; set; }
+        /// <summary>
         /// Get or sets AvgRating.
         /// </summary>
         public byte AvgRating { get; set; }
@@ -29,7 +33,7 @@ namespace Legendary.Business.Models.Video
         /// <summary>
         /// Gets or sets Data Create Video.
         /// </summary>
-        public DateTime DateCreate { get; set; }
+        public DateTime? DateCreate { get; set; }
 
         /// <summary>
         /// Gets or sets Reference on Image for Video.

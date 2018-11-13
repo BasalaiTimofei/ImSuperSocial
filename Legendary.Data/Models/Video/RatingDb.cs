@@ -1,4 +1,5 @@
 ﻿using Legendary.Data.Models.User;
+using System.Collections.Generic;
 
 namespace Legendary.Data.Models.Video
 {
@@ -20,5 +21,25 @@ namespace Legendary.Data.Models.Video
         /// Gets or sets Rating (1, -1).
         /// </summary>
         public sbyte Rating { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var db = obj as RatingDb;
+            return db != null &&
+                   Id == db.Id &&
+                   EqualityComparer<UserDb>.Default.Equals(User, db.User) &&
+                   EqualityComparer<VideoDb>.Default.Equals(Video, db.Video) &&
+                   Rating == db.Rating;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 330983822;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+            hashCode = hashCode * -1521134295 + EqualityComparer<UserDb>.Default.GetHashCode(User);
+            hashCode = hashCode * -1521134295 + EqualityComparer<VideoDb>.Default.GetHashCode(Video);
+            hashCode = hashCode * -1521134295 + Rating.GetHashCode();
+            return hashCode;
+        }
     }
 }

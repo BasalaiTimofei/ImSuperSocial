@@ -55,12 +55,14 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Models\Actor\ActorDb.cs" />
     <Compile Include="Context\Configuration.cs" />
+    <Compile Include="Models\Actor\Gender.cs" />
     <Compile Include="Models\User\UserDb.cs" />
     <Compile Include="Models\Video\CategoryDb.cs" />
     <Compile Include="Models\Video\CommentDb.cs" />
     <Compile Include="Models\Video\RatingDb.cs" />
     <Compile Include="Models\Video\VideoDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\ActorRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />

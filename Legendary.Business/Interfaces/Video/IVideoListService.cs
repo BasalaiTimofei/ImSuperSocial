@@ -17,6 +17,12 @@ namespace Legendary.Business.Interfaces
         /// <returns>A <see cref="VideoListDto"/></returns>
         VideoListDto GetVideoList(string id);
         /// <summary>
+        /// Get small models video by actor Id.
+        /// </summary>
+        /// <param name="actorId"></param>
+        /// <returns><see cref="List{VideoListDto}"/></returns>
+        List<VideoListDto> GetVideoByActor(string actorId);
+        /// <summary>
         /// Get random small model video.
         /// </summary>
         /// <returns>A <see cref="VideoListDto"/></returns>

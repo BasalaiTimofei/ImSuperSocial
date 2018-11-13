@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Legendary.Data.Models.User;
 
 namespace Legendary.Data.Models.Video
@@ -25,5 +26,27 @@ namespace Legendary.Data.Models.Video
         /// Gets or sets Date Create Comment
         /// </summary>
         public DateTime DateCreate { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var db = obj as CommentDb;
+            return db != null &&
+                   Id == db.Id &&
+                   EqualityComparer<UserDb>.Default.Equals(User, db.User) &&
+                   EqualityComparer<VideoDb>.Default.Equals(Video, db.Video) &&
+                   Comment == db.Comment &&
+                   DateCreate == db.DateCreate;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1142500709;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
+            hashCode = hashCode * -1521134295 + EqualityComparer<UserDb>.Default.GetHashCode(User);
+            hashCode = hashCode * -1521134295 + EqualityComparer<VideoDb>.Default.GetHashCode(Video);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Comment);
+            hashCode = hashCode * -1521134295 + DateCreate.GetHashCode();
+            return hashCode;
+        }
     }
 }

@@ -7,7 +7,7 @@ using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
 
-namespace Legendary.Business.Services
+namespace Legendary.Business.Services.Video
 {
     public class VideoService : IVideoService, IDisposable
     {
@@ -22,7 +22,7 @@ namespace Legendary.Business.Services
 
         public VideoFullModel CreateVideo(VideoFullModel video)
         {
-            //TODO Проверить роль удаляющего(Удалять может только админ, модер)
+            //TODO Проверить роль
 
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -35,12 +35,13 @@ namespace Legendary.Business.Services
                 //TODO Вернуть ошибку создания в репозитории.
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
+            _uow.Save();
             return _mapper.Map<VideoDb, VideoFullModel>(dbVideo);
         }
 
         public VideoFullModel GetVideo(string id)
         {
-            //TODO Проверить роль удаляющего(Удалять может только админ, модер)
+            //TODO Проверить роль
 
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -54,7 +55,7 @@ namespace Legendary.Business.Services
 
         public List<VideoFullModel> GetListVideo()
         {
-            //TODO Проверить роль удаляющего(Удалять может только админ, модер)
+            //TODO Проверить роль
 
             var dbVideo = _uow.VideoRepository.GetAll();
             if (dbVideo == null)
@@ -67,17 +68,18 @@ namespace Legendary.Business.Services
 
         public void DeleteVideo(string id)
         {            
-            //TODO Проверить роль удаляющего(Удалять может только админ, модер)
+            //TODO Проверить роль
 
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             _uow.VideoRepository.Delete(id);
+            _uow.Save();
         }
 
         public VideoFullModel UpdateVideo(string videoId, VideoFullModel video)
         {
-            //TODO Проверить роль удаляющего(Удалять может только админ, модер)
+            //TODO Проверить роль
 
             if (video == null || videoId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();

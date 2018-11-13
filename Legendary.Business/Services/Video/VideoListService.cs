@@ -7,7 +7,7 @@ using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
 
-namespace Legendary.Business.Services
+namespace Legendary.Business.Services.Video
 {
     public class VideoListService : IVideoListService, IDisposable
     {
@@ -41,12 +41,28 @@ namespace Legendary.Business.Services
             return _mapper.Map<VideoDb, VideoListDto>(video);
         }
 
+        public List<VideoListDto> GetVideoByActor(string actorId)
+        {
+            //TODO Спросить у Саши как это написать через VideoRepository
+            if (actorId == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            var dbVideo = _uow.ActorRepository.Get(actorId).Video.ToList();
+
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+
+            return dtoVideo;
+        }
+
         public VideoListDto GetRandomVideoList()
         {
-            var dbVideo = _uow.VideoRepository.GetAll() != null 
+            var dbVideo = _uow.VideoRepository.GetAll().ToArray(); 
+            //TODO Спросить у Саши нужна ли тут проверка
+            /* 
+                != null 
                 ? _uow.VideoRepository.GetAll().ToArray()
                 : throw new NullReferenceException();//RequestedResourceNotFoundException();
-
+            */
             if (dbVideo.Length == 0)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 

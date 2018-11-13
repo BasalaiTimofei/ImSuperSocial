@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+using Legendary.Data.Models.Actor;
 using Legendary.Data.Models.Video;
 
 namespace Legendary.Data.Context
@@ -65,5 +66,21 @@ namespace Legendary.Data.Context
             Property(p => p.Rating).IsOptional();
         }
     }
+
+    public class ActorDbConfiguration : EntityTypeConfiguration<ActorDb>
+    {
+        public ActorDbConfiguration()
+        {
+            HasKey(k => k.Id);
+
+            HasMany(m => m.Video)
+                .WithMany(m => m.Actor);
+
+            Property(p => p.Gender).IsRequired();
+            Property(p => p.Name).IsRequired().HasMaxLength(100);
+            Property(p => p.ImgLink).IsRequired();
+        }
+    }
+
 
 }

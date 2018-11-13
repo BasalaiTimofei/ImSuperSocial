@@ -1,3 +1,4 @@
+using Legendary.Data.Models.Actor;
 using Legendary.Data.Models.User;
 using Legendary.Data.Models.Video;
 
@@ -13,10 +14,12 @@ namespace Legendary.Data.Context
             Database.SetInitializer<LegendaryContext>(new CreateDatabaseIfNotExists<LegendaryContext>());
         }
 
-        public DbSet<CategoryDb> Categories { get; set; }
-        public DbSet<CommentDb> Comments { get; set; }
-        public DbSet<VideoDb> Video { get; set; }
-        public DbSet<UserDb> Users { get; set; }
+        public virtual DbSet<CategoryDb> Categories { get; set; }
+        public virtual DbSet<CommentDb> Comments { get; set; }
+        public virtual DbSet<VideoDb> Video { get; set; }
+        public virtual DbSet<UserDb> Users { get; set; }
+        public virtual DbSet<ActorDb> Actors { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -24,8 +27,9 @@ namespace Legendary.Data.Context
             modelBuilder.Configurations.Add(new CategoryDbConfiguration());
             modelBuilder.Configurations.Add(new CommentDbConfiguration());
             modelBuilder.Configurations.Add(new RatingDbConfiguration());
+            modelBuilder.Configurations.Add(new ActorDbConfiguration());
 
-            
+
         }
     }
 }

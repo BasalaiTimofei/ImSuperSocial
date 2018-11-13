@@ -25,14 +25,21 @@ namespace Legendary.Business.Infrastructure
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
                 .WhenInjectedInto<VideoListService>();
+
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
                 .WhenInjectedInto<VideoItemService>();
+
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
                 .WhenInjectedInto<VideoService>();
+
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfx =>
+                        cfx.AddProfile(new ActorMappingProfile()))))
+                .WhenInjectedInto<ActorService>();
         }
     }
 }

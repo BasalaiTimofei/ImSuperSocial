@@ -5,7 +5,7 @@ using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
 
-namespace Legendary.Business.Services
+namespace Legendary.Business.Services.Video
 {
     public class VideoItemService : IVideoItemService, IDisposable
     {

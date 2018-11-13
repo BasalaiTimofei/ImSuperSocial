@@ -28,6 +28,6 @@ namespace Legendary.Business.Models.Video
         /// <summary>
         /// Gets or sets Date Create Video.
         /// </summary>
-        public DateTime DateCreate { get; set; }
+        public DateTime? DateCreate { get; set; }
     }
 }
