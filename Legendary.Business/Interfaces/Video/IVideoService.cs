@@ -9,7 +9,7 @@ namespace Legendary.Business.Interfaces
         /// Create a new Video.
         /// </summary>
         /// <param name="video">A Video Full model.</param>
-        VideoFullModel CreateVideo(VideoFullModel video);
+        void CreateVideo(VideoFullModel video);
         /// <summary>
         /// Get a video by Id.
         /// </summary>

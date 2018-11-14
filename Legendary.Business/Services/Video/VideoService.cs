@@ -20,7 +20,7 @@ namespace Legendary.Business.Services.Video
         }
 
         /// <inheritdoc/>
-        public VideoFullModel CreateVideo(VideoFullModel video)
+        public void CreateVideo(VideoFullModel video)
         {
             //TODO Проверить роль
 
@@ -28,15 +28,10 @@ namespace Legendary.Business.Services.Video
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             video.Id = Guid.NewGuid().ToString();
+
             _uow.VideoRepository.Create(_mapper.Map<VideoDb>(video));
 
-            var dbVideo = _uow.VideoRepository.Get(video.Id);
-            if (dbVideo == null)
-                //TODO Вернуть ошибку создания в репозитории.
-                throw new NullReferenceException();//RequestedResourceNotFoundException();
-
             _uow.Save();
-            return _mapper.Map<VideoDb, VideoFullModel>(dbVideo);
         }
 
         /// <inheritdoc/>
@@ -88,10 +83,10 @@ namespace Legendary.Business.Services.Video
             if (video == null || videoId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dbVideo = _uow.VideoRepository.Get(videoId);
-            if (dbVideo == null)
+            if (!VidoIsInDb(p => string.Equals(p.Id, video.Id, StringComparison.CurrentCultureIgnoreCase),
+                    out var videoDb))
+                //TODO Вернуть ошибку о том что такой продукт есть
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
-            video.Id = videoId;
 
             _uow.VideoRepository.Update(_mapper.Map<VideoDb>(video));
             _uow.Save();
@@ -102,6 +97,12 @@ namespace Legendary.Business.Services.Video
         public void Dispose()
         {
             _uow.Dispose();
+        }
+
+        private bool VidoIsInDb(Predicate<VideoDb> condition, out IEnumerable<VideoDb> video)
+        {
+            video = _uow.VideoRepository.Find(condition);
+            return video.Any();
         }
     }
 }

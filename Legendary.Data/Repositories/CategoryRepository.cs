@@ -27,9 +27,10 @@ namespace Legendary.Data.Repositories
             return _legendaryContext.Categories.Find(id);
         }
 
-        public IEnumerable<CategoryDb> Find(Func<CategoryDb, bool> predicate)
+        public IEnumerable<CategoryDb> Find(Predicate<CategoryDb> predicate)
         {
-            return _legendaryContext.Categories.Where(predicate).ToList();
+            var condition = new Func<CategoryDb, bool>(predicate);
+            return _legendaryContext.Categories.Where(condition).ToList();
         }
 
         public void Create(CategoryDb category)

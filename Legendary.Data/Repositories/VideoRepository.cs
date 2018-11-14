@@ -26,9 +26,10 @@ namespace Legendary.Data.Repositories
             return _legendaryContext.Video.Find(id);
         }
 
-        public IEnumerable<VideoDb> Find(Func<VideoDb, bool> predicate)
+        public IEnumerable<VideoDb> Find(Predicate<VideoDb> predicate)
         {
-            return _legendaryContext.Video.Where(predicate).ToList();
+            var condition = new Func<VideoDb, bool>(predicate);
+            return _legendaryContext.Video.Where(condition).ToList();
         }
 
         public void Create(VideoDb video)

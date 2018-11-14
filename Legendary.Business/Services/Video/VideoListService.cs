@@ -49,10 +49,10 @@ namespace Legendary.Business.Services.Video
             if (actorId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dbVideo = _uow.VideoRepository.Find(a =>
-                    a.Actor.Select(s => string.Equals(s.Id, actorId, StringComparison.CurrentCultureIgnoreCase))
-                        .First())
-                .ToList();
+            var dbVideo = _uow.VideoRepository.GetAll().Where(a => a.Actor
+                .Select(s => string.Equals(s.Id, actorId, StringComparison.CurrentCultureIgnoreCase))
+                    .First()).ToList();
+
             if (dbVideo.Count == 0)
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();

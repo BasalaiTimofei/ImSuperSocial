@@ -18,6 +18,10 @@ namespace Legendary.Business.Models.Video
         /// </summary>
         public virtual ICollection<CategoryDto> Categories { get; set; }
         /// <summary>
+        /// Gets or sets Actors.
+        /// </summary>
+        public virtual ICollection<ActorDto> Actors { get; set; }
+        /// <summary>
         /// Gets or sets AvgRating.
         /// </summary>
         public byte AvgRating { get; set; }

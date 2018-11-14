@@ -26,9 +26,10 @@ namespace Legendary.Data.Repositories
             return _legendaryContext.Actors.Find(id);
         }
 
-        public IEnumerable<ActorDb> Find(Func<ActorDb, bool> predicate)
+        public IEnumerable<ActorDb> Find(Predicate<ActorDb> predicate)
         {
-            return _legendaryContext.Actors.Where(predicate).ToList();
+            var condition = new Func<ActorDb, bool>(predicate);
+            return _legendaryContext.Actors.Where(condition).ToList();
         }
 
         public void Create(ActorDb item)

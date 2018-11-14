@@ -27,9 +27,10 @@ namespace Legendary.Data.Repositories
             return _legendaryContext.Comments.Find(id);
         }
 
-        public IEnumerable<CommentDb> Find(Func<CommentDb, bool> predicate)
+        public IEnumerable<CommentDb> Find(Predicate<CommentDb> predicate)
         {
-            return _legendaryContext.Comments.Where(predicate).ToList();
+            var condition = new Func<CommentDb, bool>(predicate);
+            return _legendaryContext.Comments.Where(condition).ToList();
         }
 
         public void Create(CommentDb comment)
