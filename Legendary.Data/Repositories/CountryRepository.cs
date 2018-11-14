@@ -8,10 +8,10 @@ using Legendary.Data.Models.Country;
 
 namespace Legendary.Data.Repositories
 {
-    public class CoutryRepository : IRepository<CountryDb>
+    public class CountryRepository : IRepository<CountryDb>
     {
         private readonly LegendaryContext _legendaryContext;
-        public CoutryRepository(LegendaryContext legendaryContext)
+        public CountryRepository(LegendaryContext legendaryContext)
         {
             _legendaryContext = legendaryContext;
         }

@@ -68,7 +68,7 @@
     <Compile Include="Repositories\Actor\ActorRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
-    <Compile Include="Repositories\CoutryRepository.cs" />
+    <Compile Include="Repositories\CountryRepository.cs" />
     <Compile Include="Repositories\Studio\StudioRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\Video\VideoRepository.cs" />

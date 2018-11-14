@@ -33,9 +33,5 @@ namespace Legendary.Business.Interfaces.Video
         /// <param name="videoId">Id Video.</param>
         /// <param name="video">Video full model.</param>
         VideoFullModel UpdateVideo(string videoId, VideoFullModel video);
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        void Dispose();
     }
 }

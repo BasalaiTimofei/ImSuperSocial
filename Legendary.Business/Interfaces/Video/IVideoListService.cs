@@ -27,16 +27,18 @@ namespace Legendary.Business.Interfaces.Video
         /// Get small model video by Category Id.
         /// </summary>
         /// <param name="categoryId"></param>
-        /// <returns></returns>
+        /// <returns><see cref="List{VideoSmallModel}"/></returns>
         List<VideoSmallModel> GetVideoByCategory(string categoryId);
+        /// <summary>
+        /// Get small model video by Studio Id.
+        /// </summary>
+        /// <param name="studioId"></param>
+        /// <returns><see cref="List{VideoSmallModel}"/></returns>
+        List<VideoSmallModel> GetVideoByStudio(string studioId);
         /// <summary>
         /// Get random small model video.
         /// </summary>
         /// <returns>A <see cref="Video"/></returns>
         VideoSmallModel GetRandomVideoList();
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        void Dispose();
     }
 }

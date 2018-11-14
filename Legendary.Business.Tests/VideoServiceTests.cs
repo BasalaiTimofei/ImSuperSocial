@@ -11,6 +11,10 @@ using Legendary.Data.Models.Rating;
 using Legendary.Data.Models.Video;
 using NUnit.Framework;
 using Moq;
+using Legendary.Business.Infrastructure.Mapping;
+using Legendary.Data.Models.Country;
+using Legendary.Data.Models.Studio;
+
 
 namespace Legendary.Business.Tests
 {
@@ -34,12 +38,24 @@ namespace Legendary.Business.Tests
 
         private ActorDb _actorDb;
 
+        private StudioDb _studio;
+
 
 
         [SetUp]
         public void SetUpMethod()
         {
             _selectCollectionVideo = new List<VideoDb>();
+            
+            _studio = new StudioDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "ActorName",
+                ImgLink = "ImageReference",
+                Video = new List<VideoDb>(),
+                Rating = new List<StudioRatingDb>(),
+                Cauntry = new CountryDb()
+            };
 
             _actorDb = new ActorDb
             {
@@ -61,7 +77,8 @@ namespace Legendary.Business.Tests
                 Actor = new List<ActorDb>(),
                 Categories = new List<CategoryDb>(),
                 Comments = new List<CommentDb>(),
-                Rating = new List<VideoRatingDb>()
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
             };
 
             _videoFullModel = new VideoFullModel
@@ -74,7 +91,8 @@ namespace Legendary.Business.Tests
                 ReferenceOnVideo = "VideoReference",
                 DateCreate = DateTime.UtcNow,
                 Categories = new List<Category>(),
-                Actors = new List<Actor>()
+                Actors = new List<Actor>(),
+                Studio = new Studio()
             };
 
             _videoList = new VideoSmallModel
@@ -91,7 +109,10 @@ namespace Legendary.Business.Tests
                 Name = "VideoName",
                 AvgRating = 50,
                 ReferenceOnVideo = "VideoReference",
-                DateCreate = DateTime.UtcNow
+                DateCreate = DateTime.UtcNow,
+                Studio = new Studio(),
+                Categories = new List<Category>(),
+                Actors = new List<Actor>()
             };
 
             _categoryDb = new CategoryDb
@@ -116,36 +137,12 @@ namespace Legendary.Business.Tests
 
             _configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<VideoDb, VideoSmallModel>();
-
-                cfg.CreateMap<VideoDb, VideoItem>()
-                    .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
-                    .ForMember(q => q.Actors, opt => opt.MapFrom(w => w.Actor))
-                    .ForMember(q => q.AvgRating,
-                        opt => opt.MapFrom(w =>
-                            w.Rating.Count == 0 ? 50
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) > 50 ? 100
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
-                    .ReverseMap()
-                    .ForMember(q => q.Rating, opt => opt.Ignore())
-                    .ForMember(q => q.Actor, opt => opt.MapFrom(w => w.Actors));
-
-                cfg.CreateMap<VideoDb, VideoFullModel>()
-                    .ForMember(q => q.Actors, opt => opt.MapFrom(w => w.Actor))
-                    .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
-                    .ForMember(q => q.AvgRating,
-                        opt => opt.MapFrom(w =>
-                            w.Rating.Count == 0 ? 50
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) > 50 ? 100
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
-                            : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
-                    .ReverseMap()
-                    .ForMember(q => q.Actor, opt => opt.MapFrom(w => w.Actors))
-                    .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
-                    .ForMember(q => q.Rating, opt => opt.Ignore())
-                    .ForMember(q => q.Comments, opt => opt.Ignore())
-                    .ForMember(q => q.DateCreate, opt => opt.Ignore());
+                cfg.AddProfile(new ActorMappingProfile());
+                cfg.AddProfile(new CategoryMappingProfile());
+                cfg.AddProfile(new CountryMappingProfile());
+                cfg.AddProfile(new CommentMappingProfile());
+                cfg.AddProfile(new VideoMappingProfile());
+                cfg.AddProfile(new StudioMappingProfile());
             });
             _mapper = new Mapper(_configuration);
 
@@ -346,15 +343,68 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByActor_Get_GoodActorId_Return_Video_VideoListModel()
+        public void GetVideo_ByActor_Get_GoodActorId_Return_OneVideo_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
-            _videoDb.Actor.Add(_actorDb);
             _actorDb.Id = id;
-            _videoDb.Actor.Add(_actorDb);
-            _selectCollectionVideo.Add(_videoDb);
+
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>
+                {
+                    _actorDb,
+                    new ActorDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "ActorName",
+                        ImgLink = "ImageReference",
+                        Gender = "Man",
+                        Video = new List<VideoDb>()
+                    }
+                },
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>
+                {
+                    new ActorDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "ActorName",
+                        ImgLink = "ImageReference",
+                        Gender = "Man",
+                        Video = new List<VideoDb>()
+                    }
+                },
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
+            });
+
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
 
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
@@ -365,13 +415,114 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
+        public void GetVideo_ByActor_Get_GoodActorId_Return_TwoVideo_VideoSmallModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _actorDb.Id = id;
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>
+                {
+                    _actorDb,
+                    new ActorDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "ActorName",
+                        ImgLink = "ImageReference",
+                        Gender = "Man",
+                        Video = new List<VideoDb>()
+                    }
+                },
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>
+                {
+                    _actorDb,
+                    new ActorDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "ActorName",
+                        ImgLink = "ImageReference",
+                        Gender = "Man",
+                        Video = new List<VideoDb>()
+                    }
+                },
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>
+                {
+                    new ActorDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "ActorName",
+                        ImgLink = "ImageReference",
+                        Gender = "Man",
+                        Video = new List<VideoDb>()
+                    }
+                },
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb()
+            });
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = videoListService.GetVideoByActor(id);
+
+                Assert.That(result.Count, Is.EqualTo(2));
+            }
+        }
+
+        [Test]
         [Ignore("Надо понять как ловить экс")]
-        public void GetVideo_ByActor_Get_GoodActorId_Return_NullReferenceException_VideoListModel()
+        public void GetVideo_ByActor_Get_GoodActorId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _selectCollectionVideo = null;
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
 
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
@@ -382,12 +533,17 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByActor_Get_GoodActorId_Return_ArgumentNullException_VideoListModel()
+        public void GetVideo_ByActor_Get_GoodActorId_Return_ArgumentNullException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _selectCollectionVideo = null;
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
 
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
@@ -398,7 +554,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByActor_Get_AnyActorId_Return_NullReferenceException_VideoListModel()
+        public void GetVideo_ByActor_Get_AnyActorId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _videoDb.Actor.Add(_actorDb);
@@ -407,6 +563,13 @@ namespace Legendary.Business.Tests
             _selectCollectionVideo.Add(_videoDb);
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+
 
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
@@ -417,7 +580,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByActor_Get_NullActorId_Return_NullReferenceException_VideoListModel()
+        public void GetVideo_ByActor_Get_NullActorId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _videoDb.Actor.Add(_actorDb);
@@ -426,6 +589,12 @@ namespace Legendary.Business.Tests
             _selectCollectionVideo.Add(_videoDb);
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
 
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
@@ -436,13 +605,81 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByCategory_Get_GoodCategoryId_Return_Video_VedeoListModel()
+        public void GetVideo_ByCategory_Get_GoodCategoryId_Return_OneVideo_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
-            _videoDb.Categories.Add(_categoryDb);
             _categoryDb.Id = id;
-            _videoDb.Categories.Add(_categoryDb);
-            _selectCollectionVideo.Add(_videoDb);
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    _categoryDb,
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+
 
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);
@@ -461,7 +698,100 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByCategory_Get_GoodCategoryId_ArgumentNullException_VedeoListModel()
+        public void GetVideo_ByCategory_Get_GoodCategoryId_Return_TwoVideo_VideoSmallModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _categoryDb.Id = id;
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    _categoryDb,
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    _categoryDb,
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>
+                {
+                    new CategoryDb
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "CategoryName",
+                        Video = new List<VideoDb>()
+                    }
+
+                },
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = videoListService.GetVideoByCategory(id);
+
+                Assert.That(result.Count, Is.EqualTo(2));
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByCategory_Get_GoodCategoryId_ArgumentNullException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _selectCollectionVideo = null;
@@ -482,7 +812,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByCategory_Get_AnyCategoryId_Return_NullReferenceException_VedeoListModel()
+        public void GetVideo_ByCategory_Get_AnyCategoryId_Return_NullReferenceException_VideoSmallModel()
         {
             _selectCollectionVideo.Add(_videoDb);
 
@@ -503,7 +833,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ByCategory_Get_NullCategoryId_Return_NullReferenceException_VedeoListModel()
+        public void GetVideo_ByCategory_Get_NullCategoryId_Return_NullReferenceException_VideoSmallModel()
         {
             _selectCollectionVideo.Add(_videoDb);
 
@@ -517,6 +847,211 @@ namespace Legendary.Business.Tests
             using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
             {
                 var result = Assert.Throws<NullReferenceException>(() => videoListService.GetVideoByCategory(null));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByStudio_Get_GoodStudioId_Return_OneVideo_VideoSmallModel()
+        {
+            var id = Guid.NewGuid().ToString();
+
+            _videoDb.Studio = _studio;
+            _videoDb.Studio.Id = id;
+            _selectCollectionVideo.Add(_videoDb);
+
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "ActorName",
+                    ImgLink = "ImageReference",
+                    Video = new List<VideoDb>(),
+                    Rating = new List<StudioRatingDb>(),
+                    Cauntry = new CountryDb()
+                }
+            });
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = videoListService.GetVideoByStudio(id);
+
+                Assert.That(result.Count, Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByStudio_Get_GoodStudioId_Return_TwoVideo_VideoSmallModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _studio.Id = id;
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "ActorName",
+                    ImgLink = "ImageReference",
+                    Video = new List<VideoDb>(),
+                    Rating = new List<StudioRatingDb>(),
+                    Cauntry = new CountryDb()
+                }
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = new StudioDb
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    Name = "ActorName",
+                    ImgLink = "ImageReference",
+                    Video = new List<VideoDb>(),
+                    Rating = new List<StudioRatingDb>(),
+                    Cauntry = new CountryDb()
+                }
+            });
+            _selectCollectionVideo.Add(new VideoDb
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "VideoName",
+                ImgLink = "ImageReference",
+                GifLink = "GifReference",
+                ReferenceOnVideo = "VideoReference",
+                DateCreate = DateTime.UtcNow,
+                Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<VideoRatingDb>(),
+                Studio = _studio
+            });
+
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = videoListService.GetVideoByStudio(id);
+
+                Assert.That(result.Count, Is.EqualTo(2));
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByStudio_Get_GoodStudioId_ArgumentNullException_VideoSmallModel()
+        {
+            var id = Guid.NewGuid().ToString();
+            _selectCollectionVideo = null;
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll())
+                .Returns(_selectCollectionVideo);
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<ArgumentNullException>(() => videoListService.GetVideoByStudio(id));
+
+                Assert.That(result, Is.TypeOf<ArgumentNullException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByStudio_Get_AnyStudioId_Return_NullReferenceException_VideoSmallModel()
+        {
+            _selectCollectionVideo.Add(_videoDb);
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll()).Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result =
+                    Assert.Throws<NullReferenceException>(() =>
+                        videoListService.GetVideoByStudio(It.IsAny<string>()));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetVideo_ByStudio_Get_NullStudioId_Return_NullReferenceException_VideoSmallModel()
+        {
+            _selectCollectionVideo.Add(_videoDb);
+
+            _mockUow.Setup(s => s.VideoRepository.GetAll()).Returns(_selectCollectionVideo);
+
+            /*
+            _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
+                .Returns(_selectCollectionVideo);
+            */
+
+            using (var videoListService = new VideoListService(_mockUow.Object, _mapper))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => videoListService.GetVideoByStudio(null));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -563,7 +1098,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_GoodId_Return_Video_VideoListModel()
+        public void GetVideo_ById_Get_GoodId_Return_Video_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _mockUow.Setup(s => s.VideoRepository.Get(id))
@@ -578,7 +1113,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_NullId_Return_NullReferenceException_VedeoListModel()
+        public void GetVideo_ById_Get_NullId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _mockUow.Setup(s => s.VideoRepository.Get(id))
@@ -593,7 +1128,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_AnyId_Return_NullReferenceException_VedeoListModel()
+        public void GetVideo_ById_Get_AnyId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _mockUow.Setup(s => s.VideoRepository.Get(id))
@@ -608,7 +1143,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetVideo_ById_Get_GoodId_Return_NullReferenceException_VedeoListModel()
+        public void GetVideo_ById_Get_GoodId_Return_NullReferenceException_VideoSmallModel()
         {
             var id = Guid.NewGuid().ToString();
             _videoDb = null;
@@ -624,7 +1159,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetAllVideo_Returns_Video_VideoListModel()
+        public void GetAllVideo_Returns_Video_VideoSmallModel()
         {
             _selectCollectionVideo.Add(_videoDb);
             _selectCollectionVideo.Add(new VideoDb
@@ -649,7 +1184,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetAllVideo_Returns_NullReferenceException_VideoListModel()
+        public void GetAllVideo_Returns_NullReferenceException_VideoSmallModel()
         {
             _selectCollectionVideo = null;
 
@@ -666,7 +1201,7 @@ namespace Legendary.Business.Tests
 
         [Test]
         [Repeat(500)]
-        public void GetRandomVideo_Returns_Video_VideoListModel()
+        public void GetRandomVideo_Returns_Video_VideoSmallModel()
         {
             _selectCollectionVideo.Add(_videoDb);
             _selectCollectionVideo.Add(new VideoDb
@@ -691,7 +1226,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetRandomVideo_Returns_ArgumentNullException_VideoListModel()
+        public void GetRandomVideo_Returns_ArgumentNullException_VideoSmallModel()
         {
             _selectCollectionVideo = null;
 
@@ -707,7 +1242,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void GetRandomVideo_Get_VoidList_Returns_NullReferenceException_VideoListModel()
+        public void GetRandomVideo_Get_VoidList_Returns_NullReferenceException_VideoSmallModel()
         {
             _mockUow.Setup(s => s.VideoRepository.GetAll())
                 .Returns(_selectCollectionVideo);

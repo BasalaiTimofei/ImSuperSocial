@@ -11,10 +11,5 @@ namespace Legendary.Business.Interfaces.Video
         /// <param name="id">Id video.</param>
         /// <returns>A <see cref="VideoItem"/></returns>
         VideoItem GetVideoItem(string id);
-
-        /// <summary>
-        /// Dispose
-        /// </summary>
-        void Dispose();
     }
 }

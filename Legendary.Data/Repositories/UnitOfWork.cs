@@ -2,7 +2,12 @@
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
+using Legendary.Data.Models.Country;
+using Legendary.Data.Models.Studio;
 using Legendary.Data.Models.Video;
+using Legendary.Data.Repositories.Actor;
+using Legendary.Data.Repositories.Studio;
+using Legendary.Data.Repositories.Video;
 
 namespace Legendary.Data.Repositories
 {
@@ -13,12 +18,24 @@ namespace Legendary.Data.Repositories
         private CommentRepository _commentRepository;
         private CategoryRepository _categoryRepository;
         private ActorRepository _actorRepository;
+        private CountryRepository _countryRepository;
+        private StudioRepository _studioRepository;
 
         private bool _disposed;
 
         public UnitOfWork(LegendaryContext legendaryContext)
         {
             _legendaryContext = legendaryContext;
+        }
+
+        public IRepository<CountryDb> CountryRepository
+        {
+            get
+            {
+                if(_countryRepository == null)
+                    _countryRepository = new CountryRepository(_legendaryContext);
+                return _countryRepository;
+            }
         }
 
         public IRepository<VideoDb> VideoRepository
@@ -58,6 +75,16 @@ namespace Legendary.Data.Repositories
                 if (_actorRepository == null)
                     _actorRepository = new ActorRepository(_legendaryContext);
                 return _actorRepository;
+            }
+        }
+
+        public IRepository<StudioDb> StudioRepository
+        {
+            get
+            {
+                if(_studioRepository == null)
+                    _studioRepository = new StudioRepository(_legendaryContext);
+                return _studioRepository;
             }
         }
 

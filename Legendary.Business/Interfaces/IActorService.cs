@@ -33,6 +33,5 @@ namespace Legendary.Business.Interfaces
         /// </summary>
         /// <returns><see cref="List{ActorDto}"/></returns>
         List<Actor> GetAllActors();
-        void Dispose();
     }
 }

@@ -50,8 +50,14 @@ namespace Legendary.Business.Services.Video
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             var dbVideo = _uow.VideoRepository.GetAll().Where(a => a.Actor
-                .Select(s => string.Equals(s.Id, actorId, StringComparison.CurrentCultureIgnoreCase))
+                .Select(s => string.Equals(s.Id, actorId, StringComparison.InvariantCultureIgnoreCase))
                     .First()).ToList();
+
+            /*
+            if (VidoIsInDb(s =>
+                s.Actor.Select(e => string.Equals(e.Id, actorId, StringComparison.InvariantCultureIgnoreCase))
+                    .First(), out var videoDb))
+            */
 
             if (dbVideo.Count == 0)
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
@@ -69,7 +75,7 @@ namespace Legendary.Business.Services.Video
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             var dbVideo = _uow.VideoRepository.GetAll().Where(a => a.Categories
-                .Select(s => string.Equals(s.Id, categoryId, StringComparison.CurrentCultureIgnoreCase))
+                .Select(s => string.Equals(s.Id, categoryId, StringComparison.InvariantCultureIgnoreCase))
                 .First()).ToList();
 
             /*
@@ -85,6 +91,28 @@ namespace Legendary.Business.Services.Video
             var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
 
             return dtoVideo;
+        }
+
+        /// <inheritdoc/>
+        public List<VideoSmallModel> GetVideoByStudio(string studioId)
+        {
+            if (studioId == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+            var vid = _uow.VideoRepository.GetAll();
+            var video = _uow.VideoRepository.GetAll().Where(w =>
+                string.Equals(w.Studio.Id, studioId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            /*
+            if (VidoIsInDb(s => string.Equals(s.Studio.Id, studioId, StringComparison.InvariantCultureIgnoreCase), out var videoDb))
+            */
+
+                if (video.Count == 0)
+                //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            var dtoVideo = video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
+
+            return dtoVideo;
+
         }
 
         /// <inheritdoc/>
