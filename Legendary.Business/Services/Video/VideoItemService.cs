@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMapper;
-using Legendary.Business.Interfaces;
+using Legendary.Business.Interfaces.Video;
 using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;

@@ -1,6 +1,6 @@
 ﻿using Legendary.Business.Models.Video;
 
-namespace Legendary.Business.Interfaces
+namespace Legendary.Business.Interfaces.Video
 {
     public interface IVideoItemService
     {

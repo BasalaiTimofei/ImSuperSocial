@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Legendary.Business.Models.Video;
 
-namespace Legendary.Business.Interfaces
+namespace Legendary.Business.Interfaces.Video
 {
     public interface IVideoService
     {

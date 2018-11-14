@@ -58,6 +58,9 @@ namespace Legendary.Business.Tests
                 ReferenceOnVideo = "VideoReference",
                 DateCreate = DateTime.UtcNow,
                 Actor = new List<ActorDb>(),
+                Categories = new List<CategoryDb>(),
+                Comments = new List<CommentDb>(),
+                Rating = new List<RatingDb>()
             };
 
             _videoFullModel = new VideoFullModel
@@ -93,7 +96,8 @@ namespace Legendary.Business.Tests
             _categoryDb = new CategoryDb
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "CategoryName"
+                Name = "CategoryName",
+                Video = new List<VideoDb>()
             };
 
             _categoryDto = new CategoryDto

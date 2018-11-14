@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Legendary.Business.Interfaces;
+using Legendary.Business.Interfaces.Video;
 using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
@@ -63,6 +63,31 @@ namespace Legendary.Business.Services.Video
         }
 
         /// <inheritdoc/>
+        public List<VideoListDto> GetVideoByCategory(string categoryId)
+        {
+            if (categoryId == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            var dbVideo = _uow.VideoRepository.GetAll().Where(a => a.Categories
+                .Select(s => string.Equals(s.Id, categoryId, StringComparison.CurrentCultureIgnoreCase))
+                .First()).ToList();
+
+            /*
+            if (VidoIsInDb(s =>
+                s.Categories.Select(e => string.Equals(e.Id, categoryId, StringComparison.InvariantCultureIgnoreCase))
+                    .First(), out var videoDb))
+            */
+
+            if (dbVideo.Count == 0)
+                //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+
+            return dtoVideo;
+        }
+
+        /// <inheritdoc/>
         public VideoListDto GetRandomVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll().ToArray(); 
@@ -80,5 +105,10 @@ namespace Legendary.Business.Services.Video
             _uow.Dispose();
         }
 
+        private bool VidoIsInDb(Predicate<VideoDb> condition, out IEnumerable<VideoDb> video)
+        {
+            video = _uow.VideoRepository.Find(condition);
+            return video.Any();
+        }
     }
 }

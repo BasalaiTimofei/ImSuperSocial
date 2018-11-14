@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Legendary.Business.Interfaces;
+using Legendary.Business.Interfaces.Video;
 using Legendary.Business.Models.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
@@ -19,7 +19,6 @@ namespace Legendary.Business.Services.Video
             _uow = uow;
         }
 
-        /// <inheritdoc/>
         public void CreateVideo(VideoFullModel video)
         {
             //TODO Проверить роль

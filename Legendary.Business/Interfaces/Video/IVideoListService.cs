@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Legendary.Business.Models.Video;
 
-namespace Legendary.Business.Interfaces
+namespace Legendary.Business.Interfaces.Video
 {
     public interface IVideoListService
     {
@@ -22,6 +22,12 @@ namespace Legendary.Business.Interfaces
         /// <param name="actorId"></param>
         /// <returns><see cref="List{VideoListDto}"/></returns>
         List<VideoListDto> GetVideoByActor(string actorId);
+        /// <summary>
+        /// Get small model video by Category Id.
+        /// </summary>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+        List<VideoListDto> GetVideoByCategory(string categoryId);
         /// <summary>
         /// Get random small model video.
         /// </summary>
