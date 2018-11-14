@@ -8,7 +8,7 @@ namespace Legendary.Business.Infrastructure.Mapping
     {
         public CategoryMappingProfile()
         {
-            CreateMap<CategoryDb, CategoryDto>();
+            CreateMap<CategoryDb, Category>();
         }
     }
 }

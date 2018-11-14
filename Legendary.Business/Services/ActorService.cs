@@ -9,7 +9,7 @@ using Legendary.Data.Models.Actor;
 
 namespace Legendary.Business.Services
 {
-    public class ActorService : IActorService, IDisposable
+    public class ActorService : IActorService
     {
         private readonly IUnitOfWork _uow;
         private readonly  IMapper _mapper;
@@ -21,7 +21,7 @@ namespace Legendary.Business.Services
 
 
         /// <inheritdoc/>
-        public void CreateActor(ActorDto actor)
+        public void CreateActor(Actor actor)
         {
             //TODO Проверить роль
 
@@ -40,7 +40,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public void UpadteActor(string actorId, ActorDto actor)
+        public void UpadteActor(string actorId, Actor actor)
         {
             //TODO Проверить роль
 
@@ -48,8 +48,10 @@ namespace Legendary.Business.Services
                 throw new NullReferenceException();//RequestedResourceNotFoundException();        
 
             var dbVideo = _uow.VideoRepository.Get(actorId);
-            if (dbVideo == null)
+            if (ActorIsInDb(
+                f => string.Equals(f.Id, actorId, StringComparison.InvariantCultureIgnoreCase), out var actors))
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
+
             actor.Id = actorId;
 
             _uow.ActorRepository.Update(_mapper.Map<ActorDb>(actor));
@@ -69,7 +71,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public ActorDto GetActor(string id)
+        public Actor GetActor(string id)
         {
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -78,23 +80,29 @@ namespace Legendary.Business.Services
             if (actor == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            return _mapper.Map<ActorDb, ActorDto>(actor);
+            return _mapper.Map<ActorDb, Actor>(actor);
         }
 
         /// <inheritdoc/>
-        public List<ActorDto> GetAllActors()
+        public List<Actor> GetAllActors()
         {
             var actors = _uow.ActorRepository.GetAll();
             if (actors == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var actorsDto = actors.Select(s => _mapper.Map<ActorDto>(s)).ToList();
+            var actorsDto = actors.Select(s => _mapper.Map<Actor>(s)).ToList();
             return actorsDto;
         }
 
         public void Dispose()
         {
             _uow.Dispose();
+        }
+
+        private bool ActorIsInDb(Predicate<ActorDb> condition, out IEnumerable<ActorDb> video)
+        {
+            video = _uow.ActorRepository.Find(condition);
+            return video.Any();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Legendary.Data.Repositories
 
         public CommentDb Get(string id)
         {
-            return _legendaryContext.Comments.Find(id);
+            return _legendaryContext.Comments.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public IEnumerable<CommentDb> Find(Predicate<CommentDb> predicate)
@@ -46,7 +46,7 @@ namespace Legendary.Data.Repositories
 
         public void Delete(string id)
         {
-            var comment = _legendaryContext.Comments.Find(id);
+            var comment = _legendaryContext.Comments.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (comment != null)
                 _legendaryContext.Comments.Remove(comment);
         }

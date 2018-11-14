@@ -4,6 +4,9 @@ using Legendary.Data.Models.User;
 
 namespace Legendary.Data.Models.Video
 {
+    /// <summary>
+    /// Comments DataBase model.
+    /// </summary>
     public class CommentDb
     {
         /// <summary>

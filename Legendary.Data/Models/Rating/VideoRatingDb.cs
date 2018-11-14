@@ -1,9 +1,13 @@
 ﻿using Legendary.Data.Models.User;
 using System.Collections.Generic;
+using Legendary.Data.Models.Video;
 
-namespace Legendary.Data.Models.Video
+namespace Legendary.Data.Models.Rating
 {
-    public class RatingDb
+    /// <summary>
+    /// Video rating DataVase model.
+    /// </summary>
+    public class VideoRatingDb
     {
         /// <summary>
         /// Gets or sets Id Rating.
@@ -24,7 +28,7 @@ namespace Legendary.Data.Models.Video
 
         public override bool Equals(object obj)
         {
-            var db = obj as RatingDb;
+            var db = obj as VideoRatingDb;
             return db != null &&
                    Id == db.Id &&
                    EqualityComparer<UserDb>.Default.Equals(User, db.User) &&

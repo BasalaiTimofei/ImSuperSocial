@@ -9,8 +9,8 @@ namespace Legendary.Data.Interfaces
         IEnumerable<T> GetAll();
         T Get(string id);
         IEnumerable<T> Find(Predicate<T> predicate);
-        void Create(T video);
-        void Update(T video);
+        void Create(T item);
+        void Update(T item);
         void Delete(string id);
     }
 }

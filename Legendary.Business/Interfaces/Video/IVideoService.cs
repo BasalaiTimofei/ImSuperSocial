@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Legendary.Business.Models.Video;
 
 namespace Legendary.Business.Interfaces.Video
 {
-    public interface IVideoService
+    public interface IVideoService : IDisposable
     {
         /// <summary>
         /// Create a new Video.

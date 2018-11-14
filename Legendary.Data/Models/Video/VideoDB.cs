@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Legendary.Data.Models.Actor;
+using Legendary.Data.Models.Rating;
+using Legendary.Data.Models.Studio;
 
 namespace Legendary.Data.Models.Video
 {
+    /// <summary>
+    /// Video DataBase model.
+    /// </summary>
     public class VideoDb
     {
         /// <summary>
@@ -22,7 +27,7 @@ namespace Legendary.Data.Models.Video
         /// <summary>
         /// Gets or sets collection video Rating.
         /// </summary>
-        public virtual ICollection<RatingDb> Rating { get; set; }
+        public virtual ICollection<VideoRatingDb> Rating { get; set; }
         /// <summary>
         /// Gets or sets collection video Commets.
         /// </summary>
@@ -31,6 +36,10 @@ namespace Legendary.Data.Models.Video
         /// Gets or sets collection Actors.
         /// </summary>
         public virtual ICollection<ActorDb> Actor { get; set; }
+        /// <summary>
+        /// Gets or sets Studio.
+        /// </summary>
+        public virtual StudioDb Studio { get; set; }
 
         /// <summary>
         /// Gets or sets reference on Video.
@@ -57,7 +66,7 @@ namespace Legendary.Data.Models.Video
                    Id == db.Id &&
                    Name == db.Name &&
                    EqualityComparer<ICollection<CategoryDb>>.Default.Equals(Categories, db.Categories) &&
-                   EqualityComparer<ICollection<RatingDb>>.Default.Equals(Rating, db.Rating) &&
+                   EqualityComparer<ICollection<VideoRatingDb>>.Default.Equals(Rating, db.Rating) &&
                    EqualityComparer<ICollection<CommentDb>>.Default.Equals(Comments, db.Comments) &&
                    EqualityComparer<ICollection<ActorDb>>.Default.Equals(Actor, db.Actor) &&
                    ReferenceOnVideo == db.ReferenceOnVideo &&
@@ -72,7 +81,7 @@ namespace Legendary.Data.Models.Video
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<CategoryDb>>.Default.GetHashCode(Categories);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<RatingDb>>.Default.GetHashCode(Rating);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<VideoRatingDb>>.Default.GetHashCode(Rating);
             hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<CommentDb>>.Default.GetHashCode(Comments);
             hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<ActorDb>>.Default.GetHashCode(Actor);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ReferenceOnVideo);

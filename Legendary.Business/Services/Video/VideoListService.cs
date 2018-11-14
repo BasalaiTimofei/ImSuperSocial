@@ -9,7 +9,7 @@ using Legendary.Data.Models.Video;
 
 namespace Legendary.Business.Services.Video
 {
-    public class VideoListService : IVideoListService, IDisposable
+    public class VideoListService : IVideoListService
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -20,19 +20,19 @@ namespace Legendary.Business.Services.Video
         }
 
         /// <inheritdoc/>
-        public List<VideoListDto> GetAllVideoList()
+        public List<VideoSmallModel> GetAllVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll();
             if (dbVideo == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
 
             return dtoVideo;
         }
 
         /// <inheritdoc/>
-        public VideoListDto GetVideoList(string id)
+        public VideoSmallModel GetVideoList(string id)
         {
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -40,11 +40,11 @@ namespace Legendary.Business.Services.Video
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            return _mapper.Map<VideoDb, VideoListDto>(video);
+            return _mapper.Map<VideoDb, VideoSmallModel>(video);
         }
 
         /// <inheritdoc/>
-        public List<VideoListDto> GetVideoByActor(string actorId)
+        public List<VideoSmallModel> GetVideoByActor(string actorId)
         {
             if (actorId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -57,13 +57,13 @@ namespace Legendary.Business.Services.Video
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
 
             return dtoVideo;
         }
 
         /// <inheritdoc/>
-        public List<VideoListDto> GetVideoByCategory(string categoryId)
+        public List<VideoSmallModel> GetVideoByCategory(string categoryId)
         {
             if (categoryId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -82,13 +82,13 @@ namespace Legendary.Business.Services.Video
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoListDto>(s)).ToList();
+            var dtoVideo = dbVideo.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
 
             return dtoVideo;
         }
 
         /// <inheritdoc/>
-        public VideoListDto GetRandomVideoList()
+        public VideoSmallModel GetRandomVideoList()
         {
             var dbVideo = _uow.VideoRepository.GetAll().ToArray(); 
             
@@ -97,7 +97,7 @@ namespace Legendary.Business.Services.Video
 
             var video = dbVideo[new Random().Next(0, dbVideo.Length)];
 
-            return _mapper.Map<VideoDb, VideoListDto>(video);
+            return _mapper.Map<VideoDb, VideoSmallModel>(video);
         }
 
         public void Dispose()

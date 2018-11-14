@@ -9,7 +9,7 @@ using Legendary.Data.Models.Video;
 
 namespace Legendary.Business.Services.Video
 {
-    public class VideoService : IVideoService, IDisposable
+    public class VideoService : IVideoService
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;

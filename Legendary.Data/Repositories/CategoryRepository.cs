@@ -24,7 +24,7 @@ namespace Legendary.Data.Repositories
 
         public CategoryDb Get(string id)
         {
-            return _legendaryContext.Categories.Find(id);
+            return _legendaryContext.Categories.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public IEnumerable<CategoryDb> Find(Predicate<CategoryDb> predicate)
@@ -45,7 +45,7 @@ namespace Legendary.Data.Repositories
 
         public void Delete(string id)
         {
-            var category = _legendaryContext.Categories.Find(id);
+            var category = _legendaryContext.Categories.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (category != null)
                 _legendaryContext.Categories.Remove(category);
         }

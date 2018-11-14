@@ -55,22 +55,28 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Models\Actor\ActorDb.cs" />
     <Compile Include="Context\Configuration.cs" />
-    <Compile Include="Models\Actor\Gender.cs" />
+    <Compile Include="Models\Country\CountryDb.cs" />
+    <Compile Include="Models\Rating\ActorRatingDb.cs" />
+    <Compile Include="Models\Rating\StudioRatingDb.cs" />
+    <Compile Include="Models\Studio\StudioDb.cs" />
     <Compile Include="Models\User\UserDb.cs" />
     <Compile Include="Models\Video\CategoryDb.cs" />
     <Compile Include="Models\Video\CommentDb.cs" />
-    <Compile Include="Models\Video\RatingDb.cs" />
+    <Compile Include="Models\Rating\VideoRatingDb.cs" />
     <Compile Include="Models\Video\VideoDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ActorRepository.cs" />
+    <Compile Include="Repositories\Actor\ActorRepository.cs" />
     <Compile Include="Repositories\CategoryRepository.cs" />
     <Compile Include="Repositories\CommentRepository.cs" />
+    <Compile Include="Repositories\CoutryRepository.cs" />
+    <Compile Include="Repositories\Studio\StudioRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
-    <Compile Include="Repositories\VideoRepository.cs" />
+    <Compile Include="Repositories\Video\VideoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,7 +7,7 @@ using Legendary.Data.Models.Video;
 
 namespace Legendary.Business.Services.Video
 {
-    public class VideoItemService : IVideoItemService, IDisposable
+    public class VideoItemService : IVideoItemService
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
@@ -18,13 +18,13 @@ namespace Legendary.Business.Services.Video
         }
 
         /// <inheritdoc/>
-        public VideoItemDto GetVideoItem(string id)
+        public VideoItem GetVideoItem(string id)
         {
             var video = _uow.VideoRepository.Get(id);
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            return _mapper.Map<VideoDb, VideoItemDto>(video);
+            return _mapper.Map<VideoDb, VideoItem>(video);
         }
 
         public void Dispose()

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 
 namespace Legendary.Business.Models
 {
-     public class CommentDto
+    /// <summary>
+    /// CommentDataTransferObject model.
+    /// </summary>
+     public class Comment
     {
         /// <summary>
         /// Gets or sets Id.
@@ -20,7 +23,7 @@ namespace Legendary.Business.Models
         /// <summary>
         /// Gets or sets Comment.
         /// </summary>
-        public string Comment { get; set; }
+        public string TextComment { get; set; }
         /// <summary>
         /// Gets or sets Date Create Comment.
         /// </summary>
@@ -28,22 +31,22 @@ namespace Legendary.Business.Models
 
         public override bool Equals(object obj)
         {
-            var dto = obj as CommentDto;
-            return dto != null &&
-                   Id == dto.Id &&
-                   UserId == dto.UserId &&
-                   VideoId == dto.VideoId &&
-                   Comment == dto.Comment &&
-                   DateCreate == dto.DateCreate;
+            var comment = obj as Comment;
+            return comment != null &&
+                   Id == comment.Id &&
+                   UserId == comment.UserId &&
+                   VideoId == comment.VideoId &&
+                   TextComment == comment.TextComment &&
+                   DateCreate == comment.DateCreate;
         }
 
         public override int GetHashCode()
         {
-            var hashCode = -1206608561;
+            var hashCode = 975659628;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(UserId);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(VideoId);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Comment);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(TextComment);
             hashCode = hashCode * -1521134295 + DateCreate.GetHashCode();
             return hashCode;
         }

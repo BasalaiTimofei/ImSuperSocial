@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Legendary.Business.Models.Video
 {
+    /// <summary>
+    /// Video DataTransferObject model.
+    /// </summary>
     public class VideoFullModel
     {
         /// <summary>
@@ -16,11 +19,15 @@ namespace Legendary.Business.Models.Video
         /// <summary>
         /// Gets or sets collection Categories.
         /// </summary>
-        public virtual ICollection<CategoryDto> Categories { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
         /// <summary>
         /// Gets or sets collection Actors.
         /// </summary>
-        public virtual ICollection<ActorDto> Actors { get; set; }
+        public virtual ICollection<Actor> Actors { get; set; }
+        /// <summary>
+        /// Gets or sets Studio.
+        /// </summary>
+        public Studio Studio { get; set; }
         /// <summary>
         /// Get or sets AvgRating.
         /// </summary>
@@ -50,8 +57,9 @@ namespace Legendary.Business.Models.Video
             return model != null &&
                    Id == model.Id &&
                    Name == model.Name &&
-                   EqualityComparer<ICollection<CategoryDto>>.Default.Equals(Categories, model.Categories) &&
-                   EqualityComparer<ICollection<ActorDto>>.Default.Equals(Actors, model.Actors) &&
+                   EqualityComparer<ICollection<Category>>.Default.Equals(Categories, model.Categories) &&
+                   EqualityComparer<ICollection<Actor>>.Default.Equals(Actors, model.Actors) &&
+                   EqualityComparer<Studio>.Default.Equals(Studio, model.Studio) &&
                    AvgRating == model.AvgRating &&
                    ReferenceOnVideo == model.ReferenceOnVideo &&
                    EqualityComparer<DateTime?>.Default.Equals(DateCreate, model.DateCreate) &&
@@ -61,11 +69,12 @@ namespace Legendary.Business.Models.Video
 
         public override int GetHashCode()
         {
-            var hashCode = 748907704;
+            var hashCode = -1008877277;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<CategoryDto>>.Default.GetHashCode(Categories);
-            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<ActorDto>>.Default.GetHashCode(Actors);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<Category>>.Default.GetHashCode(Categories);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<Actor>>.Default.GetHashCode(Actors);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Studio>.Default.GetHashCode(Studio);
             hashCode = hashCode * -1521134295 + AvgRating.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ReferenceOnVideo);
             hashCode = hashCode * -1521134295 + EqualityComparer<DateTime?>.Default.GetHashCode(DateCreate);

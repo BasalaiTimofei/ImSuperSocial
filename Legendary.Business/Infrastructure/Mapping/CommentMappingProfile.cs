@@ -8,7 +8,7 @@ namespace Legendary.Business.Infrastructure.Mapping
     {
         public CommentMappingProfile()
         {
-            CreateMap<CommentDb, CommentDto>().ReverseMap();
+            CreateMap<CommentDb, Comment>().ReverseMap();
         }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using Legendary.Data.Models.Actor;
+using Legendary.Data.Models.Country;
+using Legendary.Data.Models.Rating;
+using Legendary.Data.Models.Studio;
 using Legendary.Data.Models.Video;
 
 namespace Legendary.Data.Context
@@ -52,9 +55,9 @@ namespace Legendary.Data.Context
         }
     }
 
-    public class RatingDbConfiguration : EntityTypeConfiguration<RatingDb>
+    public class VideoRatingDbConfiguration : EntityTypeConfiguration<VideoRatingDb>
     {
-        public RatingDbConfiguration()
+        public VideoRatingDbConfiguration()
         {
             HasKey(k => k.Id);
 
@@ -63,7 +66,37 @@ namespace Legendary.Data.Context
             HasRequired(r => r.User)
                 .WithMany( /*r => r.Rating*/);
 
-            Property(p => p.Rating).IsOptional();
+            Property(p => p.Rating).IsRequired();
+        }
+    }
+
+    public class StudioRatingDbConfiguration : EntityTypeConfiguration<StudioRatingDb>
+    {
+        public StudioRatingDbConfiguration()
+        {
+            HasKey(k => k.Id);
+
+            HasRequired(r => r.Studio)
+                .WithMany(m => m.Rating);
+            HasRequired(r => r.User)
+                .WithMany( /*r => r.Rating*/);
+
+            Property(p => p.Rating).IsRequired();
+        }
+    }
+
+    public class ActorRatingDbConfiguration : EntityTypeConfiguration<ActorRatingDb>
+    {
+        public ActorRatingDbConfiguration()
+        {
+            HasKey(k => k.Id);
+
+            HasRequired(r => r.Actor)
+                .WithMany(m => m.Rating);
+            HasRequired(r => r.User)
+                .WithMany( /*r => r.Rating*/);
+
+            Property(p => p.Rating).IsRequired();
         }
     }
 
@@ -75,12 +108,45 @@ namespace Legendary.Data.Context
 
             HasMany(m => m.Video)
                 .WithMany(m => m.Actor);
+            HasMany(m => m.Rating)
+                .WithRequired(r => r.Actor);
 
-            Property(p => p.Gender).IsRequired();
+            Property(p => p.Gender).IsRequired().HasMaxLength(20);
             Property(p => p.Name).IsRequired().HasMaxLength(100);
             Property(p => p.ImgLink).IsRequired();
         }
     }
 
+    public class CountryDbConfiguration : EntityTypeConfiguration<CountryDb>
+    {
+        public CountryDbConfiguration()
+        {
+            HasKey(k => k.Id);
 
+            HasMany(m => m.Actors)
+                .WithOptional(o => o.Country);
+            HasMany(m => m.Studio)
+                .WithRequired(r => r.Cauntry);
+
+            Property(p => p.Name).IsRequired().HasMaxLength(50);
+        }
+    }
+
+    public class StudioDbConfiguration : EntityTypeConfiguration<StudioDb>
+    {
+        public StudioDbConfiguration()
+        {
+            HasKey(k => k.Id);
+
+            HasRequired(r => r.Cauntry)
+                .WithMany(m => m.Studio);
+            HasMany(m => m.Video)
+                .WithOptional(o => o.Studio);
+            HasMany(m => m.Rating)
+                .WithRequired(r => r.Studio);
+
+            Property(p => p.Name).IsRequired().HasMaxLength(50);
+            Property(p => p.ImgLink).IsRequired();
+        }
+    }
 }

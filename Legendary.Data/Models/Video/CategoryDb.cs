@@ -2,6 +2,9 @@
 
 namespace Legendary.Data.Models.Video
 {
+    /// <summary>
+    /// Category DataBase model.
+    /// </summary>
     public class CategoryDb
     {
         /// <summary>

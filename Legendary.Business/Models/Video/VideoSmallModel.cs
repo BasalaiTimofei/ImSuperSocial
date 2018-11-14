@@ -1,45 +1,46 @@
 ﻿using System.Collections.Generic;
-using Legendary.Business.Models.Video;
-using Legendary.Data.Models.Actor;
 
-namespace Legendary.Business.Models
+namespace Legendary.Business.Models.Video
 {
-    public class ActorDto
+    /// <summary>
+    /// Small model Video
+    /// </summary>
+    public class VideoSmallModel
     {
         /// <summary>
-        /// Gets or sets actor Id.
+        /// Gets or sets Id.
         /// </summary>
         public string Id { get; set; }
         /// <summary>
-        /// Gets or sets actor Name.
+        /// Gets or sets Name.
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// Gets or sets reference on image with cator.
+        /// Gets or sets reference on Video.
         /// </summary>
         public string ImgLink { get; set; }
         /// <summary>
-        /// Gets or sets actor gender.
+        /// Gets on sets Reference on Video.
         /// </summary>
-        public Gender Gender { get; set; }
+        public string GifLink { get; set; }
 
         public override bool Equals(object obj)
         {
-            var dto = obj as ActorDto;
-            return dto != null &&
-                   Id == dto.Id &&
-                   Name == dto.Name &&
-                   ImgLink == dto.ImgLink &&
-                   Gender == dto.Gender;
+            var model = obj as VideoSmallModel;
+            return model != null &&
+                   Id == model.Id &&
+                   Name == model.Name &&
+                   ImgLink == model.ImgLink &&
+                   GifLink == model.GifLink;
         }
 
         public override int GetHashCode()
         {
-            var hashCode = -199441574;
+            var hashCode = 850154383;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ImgLink);
-            hashCode = hashCode * -1521134295 + Gender.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(GifLink);
             return hashCode;
         }
     }

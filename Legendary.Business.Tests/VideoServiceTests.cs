@@ -7,6 +7,7 @@ using Legendary.Business.Models.Video;
 using Legendary.Business.Services.Video;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
+using Legendary.Data.Models.Rating;
 using Legendary.Data.Models.Video;
 using NUnit.Framework;
 using Moq;
@@ -23,13 +24,13 @@ namespace Legendary.Business.Tests
         private ICollection<VideoDb> _selectCollectionVideo;
         private VideoDb _videoDb;
         private VideoFullModel _videoFullModel;
-        private VideoItemDto _videoItem;
-        private VideoListDto _videoList;
+        private VideoItem _videoItem;
+        private VideoSmallModel _videoList;
 
         private CategoryDb _categoryDb;
-        private CategoryDto _categoryDto;
+        private Category _categoryDto;
 
-        private RatingDb _ratingDb;
+        private VideoRatingDb _ratingDb;
 
         private ActorDb _actorDb;
 
@@ -45,7 +46,7 @@ namespace Legendary.Business.Tests
                 Id =  Guid.NewGuid().ToString(),
                 Name = "ActorName",
                 ImgLink = "ImageReference",
-                Gender = Gender.Man,
+                Gender = "Man",
                 Video = new List<VideoDb>()
             };
 
@@ -60,7 +61,7 @@ namespace Legendary.Business.Tests
                 Actor = new List<ActorDb>(),
                 Categories = new List<CategoryDb>(),
                 Comments = new List<CommentDb>(),
-                Rating = new List<RatingDb>()
+                Rating = new List<VideoRatingDb>()
             };
 
             _videoFullModel = new VideoFullModel
@@ -72,11 +73,11 @@ namespace Legendary.Business.Tests
                 GifLink = "GifReference",
                 ReferenceOnVideo = "VideoReference",
                 DateCreate = DateTime.UtcNow,
-                Categories = new List<CategoryDto>(),
-                Actors = new List<ActorDto>()
+                Categories = new List<Category>(),
+                Actors = new List<Actor>()
             };
 
-            _videoList = new VideoListDto
+            _videoList = new VideoSmallModel
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "VideoName",
@@ -84,7 +85,7 @@ namespace Legendary.Business.Tests
                 GifLink = "GifReference"
             };
 
-            _videoItem = new VideoItemDto
+            _videoItem = new VideoItem
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "VideoName",
@@ -100,13 +101,13 @@ namespace Legendary.Business.Tests
                 Video = new List<VideoDb>()
             };
 
-            _categoryDto = new CategoryDto
+            _categoryDto = new Category
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "CategoryName"
             };
 
-            _ratingDb = new RatingDb
+            _ratingDb = new VideoRatingDb
             {
                 Id = Guid.NewGuid().ToString(),
                 Rating = 1
@@ -115,9 +116,9 @@ namespace Legendary.Business.Tests
 
             _configuration = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<VideoDb, VideoListDto>();
+                cfg.CreateMap<VideoDb, VideoSmallModel>();
 
-                cfg.CreateMap<VideoDb, VideoItemDto>()
+                cfg.CreateMap<VideoDb, VideoItem>()
                     .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
                     .ForMember(q => q.Actors, opt => opt.MapFrom(w => w.Actor))
                     .ForMember(q => q.AvgRating,
@@ -572,7 +573,7 @@ namespace Legendary.Business.Tests
             {
                 var result = videoListService.GetVideoList(id);
 
-                Assert.That(result, Is.TypeOf(typeof(VideoListDto)));
+                Assert.That(result, Is.TypeOf(typeof(VideoSmallModel)));
             }
         }
 
@@ -643,7 +644,7 @@ namespace Legendary.Business.Tests
             {
                 var result = videoListService.GetAllVideoList();
 
-                Assert.That(result, Is.TypeOf(typeof(List<VideoListDto>)));
+                Assert.That(result, Is.TypeOf(typeof(List<VideoSmallModel>)));
             }
         }
 
@@ -685,7 +686,7 @@ namespace Legendary.Business.Tests
             {
                 var result = videoListService.GetRandomVideoList();
 
-                Assert.That(result, Is.TypeOf(typeof(VideoListDto)));
+                Assert.That(result, Is.TypeOf(typeof(VideoSmallModel)));
             }
         }
 
@@ -730,7 +731,7 @@ namespace Legendary.Business.Tests
             {
                 var result = videoItemService.GetVideoItem(id);
 
-                Assert.That(result, Is.TypeOf(typeof(VideoItemDto)));
+                Assert.That(result, Is.TypeOf(typeof(VideoItem)));
             }
         }
 

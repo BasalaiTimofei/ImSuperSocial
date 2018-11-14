@@ -21,6 +21,7 @@ namespace Legendary.Business.Infrastructure
         public override void Load()
         {
             Bind<IUnitOfWork>().To<UnitOfWork>().WithConstructorArgument(_legendaryContext);
+
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
@@ -40,6 +41,16 @@ namespace Legendary.Business.Infrastructure
                     new Mapper(new MapperConfiguration(cfx =>
                         cfx.AddProfile(new ActorMappingProfile()))))
                 .WhenInjectedInto<ActorService>();
+
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new CountryMappingProfile()))))
+                .WhenInjectedInto<CountryService>();
+
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new StudioMappingProfile()))))
+                .WhenInjectedInto<StudioService>();
         }
     }
 }

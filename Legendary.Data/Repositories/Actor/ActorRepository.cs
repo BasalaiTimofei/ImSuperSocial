@@ -6,7 +6,7 @@ using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
 
-namespace Legendary.Data.Repositories
+namespace Legendary.Data.Repositories.Actor
 {
     public class ActorRepository : IRepository<ActorDb>
     {
@@ -23,7 +23,8 @@ namespace Legendary.Data.Repositories
 
         public ActorDb Get(string id)
         {
-            return _legendaryContext.Actors.Find(id);
+            return _legendaryContext.Actors.First(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public IEnumerable<ActorDb> Find(Predicate<ActorDb> predicate)
@@ -44,7 +45,8 @@ namespace Legendary.Data.Repositories
 
         public void Delete(string id)
         {
-            var actor = _legendaryContext.Actors.Find(id);
+            var actor = _legendaryContext.Actors.First(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (actor != null)
                 _legendaryContext.Actors.Remove(actor);
         }

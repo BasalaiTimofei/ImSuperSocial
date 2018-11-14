@@ -6,7 +6,7 @@ using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
 
-namespace Legendary.Data.Repositories
+namespace Legendary.Data.Repositories.Video
 {
     public class VideoRepository : IRepository<VideoDb>
     {
@@ -23,7 +23,8 @@ namespace Legendary.Data.Repositories
 
         public VideoDb Get(string id)
         {
-            return _legendaryContext.Video.Find(id);
+            return _legendaryContext.Video.First(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public IEnumerable<VideoDb> Find(Predicate<VideoDb> predicate)
@@ -45,7 +46,8 @@ namespace Legendary.Data.Repositories
 
         public void Delete(string id)
         {
-            var video = _legendaryContext.Video.Find(id);
+            var video = _legendaryContext.Video.First(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (video != null)
                 _legendaryContext.Video.Remove(video);
         }
