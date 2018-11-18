@@ -66,11 +66,13 @@
     <Compile Include="Infrastructure\Mapping\CategoryMappingProfile.cs" />
     <Compile Include="Infrastructure\Mapping\CommentMappingProfile.cs" />
     <Compile Include="Infrastructure\Mapping\VideoMappingProfile.cs" />
-    <Compile Include="Models\Actor.cs" />
+    <Compile Include="Models\Actor\ActorFullModel.cs" />
+    <Compile Include="Models\Actor\ActorSmallModel.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Country.cs" />
-    <Compile Include="Models\Studio.cs" />
+    <Compile Include="Models\Studio\StudioFullModel.cs" />
+    <Compile Include="Models\Studio\StudioSmallModel.cs" />
     <Compile Include="Models\Video\VideoFullModel.cs" />
     <Compile Include="Models\Video\VideoItem.cs" />
     <Compile Include="Models\Video\VideoSmallModel.cs" />

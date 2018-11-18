@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using Legendary.Business.Interfaces;
-using Legendary.Business.Models;
+using Legendary.Business.Models.Studio;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Studio;
 
@@ -22,29 +20,95 @@ namespace Legendary.Business.Services
             _uow = uow;
         }
 
-        public void Create(Studio studioModel)
+        /// <inheritdoc/>
+        public void Create(StudioFullModel studioModel)
         {
-            throw new NotImplementedException();
+            //TODO Проверка на роль
+            if (studioModel == null
+                || StudioIsInDb(
+                    s => string.Equals(s.Name, studioModel.Name, StringComparison.InvariantCultureIgnoreCase),
+                    out var studio))
+                //TODO Вернуть ошибку создания
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            studioModel.Id = Guid.NewGuid().ToString();
+            _uow.StudioRepository.Create(_mapper.Map<StudioDb>(studioModel));
+            _uow.Save();
         }
 
-        public void Update(string studioId, Studio studioModel)
+        /// <inheritdoc/>
+        public void Update(string studioId, StudioFullModel studioModel)
         {
-            throw new NotImplementedException();
+            //TODO Проверка на роль
+            if (studioModel == null
+                || studioId == null
+                || !StudioIsInDb(s => string.Equals(s.Id, studioId, StringComparison.InvariantCultureIgnoreCase),
+                    out var studio))
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            studioModel.Id = studioId;
+            _uow.StudioRepository.Update(_mapper.Map<StudioDb>(studioModel));
+            _uow.Save();
         }
 
+        /// <inheritdoc/>
         public void Delete(string studioId)
         {
-            throw new NotImplementedException();
+            //TODO Проверка на роль
+            if (studioId == null
+                || !StudioIsInDb(s => string.Equals(s.Id, studioId, StringComparison.InvariantCultureIgnoreCase),
+                    out var studio))
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+            
+            _uow.StudioRepository.Delete(studioId);
+            _uow.Save();
         }
 
-        public Studio Get(string studioId)
+        /// <inheritdoc/>
+        public StudioFullModel GetStudioFullModel(string studioId)
         {
-            throw new NotImplementedException();
+            if (studioId == null)
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            var studio = _uow.StudioRepository.Get(studioId);
+
+            if (studio == null)
+                //TODO Вернуть ошибку repository
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            return _mapper.Map<StudioDb, StudioFullModel>(studio);
         }
 
-        public List<Studio> GetAll()
+        /// <inheritdoc/>
+        public List<StudioFullModel> GetAllStudioFullModels()
         {
-            throw new NotImplementedException();
+            var studio = _uow.StudioRepository.GetAll();
+            if (studio == null || studio.Count() == 0)
+                //TODO Вернуть ошибку repository
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            return studio.Select(s => _mapper.Map<StudioDb, StudioFullModel>(s)).ToList();
+        }
+
+        /// <inheritdoc/>
+        public List<StudioSmallModel> GetAllStudioSmallModel()
+        {
+            var studio = _uow.StudioRepository.GetAll();
+            if (studio == null || studio.Count() == 0)
+                //TODO Вернуть ошибку repository
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            return studio.Select(s => _mapper.Map<StudioDb, StudioSmallModel>(s)).ToList();
+        }
+
+        /// <inheritdoc/>
+        public List<StudioSmallModel> GetAllStudioSmallModelByCountry(string countryId)
+        {
+            if (countryId == null
+                || !StudioIsInDb(s => string.Equals(s.Cauntry.Id, countryId, StringComparison.InvariantCultureIgnoreCase), out var studio))
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            return studio.Select(s => _mapper.Map<StudioDb, StudioSmallModel>(s)).ToList();
         }
 
         public void Dispose()
@@ -56,5 +120,6 @@ namespace Legendary.Business.Services
             video = _uow.StudioRepository.Find(condition);
             return video.Any();
         }
+
     }
 }

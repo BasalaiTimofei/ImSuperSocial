@@ -12,6 +12,8 @@ using Legendary.Data.Models.Video;
 using NUnit.Framework;
 using Moq;
 using Legendary.Business.Infrastructure.Mapping;
+using Legendary.Business.Models.Actor;
+using Legendary.Business.Models.Studio;
 using Legendary.Data.Models.Country;
 using Legendary.Data.Models.Studio;
 
@@ -19,7 +21,7 @@ using Legendary.Data.Models.Studio;
 namespace Legendary.Business.Tests
 {
     [TestFixture]
-    public class VideoServiceTests
+    public class VideoService_Tests
     {
         private Mapper _mapper;
         private MapperConfiguration _configuration;
@@ -91,8 +93,8 @@ namespace Legendary.Business.Tests
                 ReferenceOnVideo = "VideoReference",
                 DateCreate = DateTime.UtcNow,
                 Categories = new List<Category>(),
-                Actors = new List<Actor>(),
-                Studio = new Studio()
+                Actors = new List<ActorSmallModel>(),
+                Studio = new StudioSmallModel()
             };
 
             _videoList = new VideoSmallModel
@@ -110,9 +112,9 @@ namespace Legendary.Business.Tests
                 AvgRating = 50,
                 ReferenceOnVideo = "VideoReference",
                 DateCreate = DateTime.UtcNow,
-                Studio = new Studio(),
+                Studio = new StudioSmallModel(),
                 Categories = new List<Category>(),
-                Actors = new List<Actor>()
+                Actors = new List<ActorSmallModel>()
             };
 
             _categoryDb = new CategoryDb
@@ -163,7 +165,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void AddVideo_BadArgument()
+        public void AddVideo_BadArgument_Return_Exception()
         {
             _videoFullModel.Id = _videoDb.Id;
             _selectCollectionVideo.Add(_videoDb);
@@ -179,7 +181,7 @@ namespace Legendary.Business.Tests
 
         [Test]
         [Ignore("Watch in a method")]
-        public void AddVideo_NotAdmin()
+        public void AddVideo_NotAdmin_Return_Exception()
         {
         }
 
@@ -198,7 +200,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void DeleteVideo_BadArgument()
+        public void DeleteVideo_BadArgument_Return_Exception()
         {
             _mockUow.Setup(s => s.VideoRepository.Find(It.IsAny<Predicate<VideoDb>>()))
                 .Returns(_selectCollectionVideo);
@@ -212,7 +214,7 @@ namespace Legendary.Business.Tests
 
         [Test]
         [Ignore("Watch in a method")]
-        public void DeleteVideo_NotAdmin()
+        public void DeleteVideo_NotAdmin_Return_Exception()
         {
         }
 
@@ -231,7 +233,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void UpdateVideo_BadArgument_Id()
+        public void UpdateVideo_BadArgument_Id_Return_Exception()
         {
             _videoFullModel.Id = _videoDb.Id;
             _selectCollectionVideo.Add(_videoDb);
@@ -246,7 +248,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void UpdateVideo_BadArgument_Model()
+        public void UpdateVideo_BadArgument_Model_Return_Exception()
         {
             _videoFullModel.Id = _videoDb.Id;
             _selectCollectionVideo.Add(_videoDb);
@@ -261,7 +263,7 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void UpdateVideo_BadArguments()
+        public void UpdateVideo_BadArguments_Return_Exception()
         {
             _videoFullModel.Id = _videoDb.Id;
             _selectCollectionVideo.Add(_videoDb);

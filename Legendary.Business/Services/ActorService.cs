@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Legendary.Business.Interfaces;
-using Legendary.Business.Models;
+using Legendary.Business.Models.Actor;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
 
@@ -21,35 +21,32 @@ namespace Legendary.Business.Services
 
 
         /// <inheritdoc/>
-        public void CreateActor(Actor actor)
+        public void Create(ActorFullModel actor)
         {
             //TODO Проверить роль
 
-            if (actor == null)
+            if (actor == null
+                || ActorIsInDb(a => string.Equals(a.Name, actor.Name, StringComparison.InvariantCultureIgnoreCase),
+                    out var actors))
+                //TODO Вернуть ошибку создания
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             actor.Id = Guid.NewGuid().ToString();
             _uow.ActorRepository.Create(_mapper.Map<ActorDb>(actor));
 
-            var dbActor = _uow.ActorRepository.Get(actor.Id);
-            if (dbActor == null)
-                //TODO Вернуть ошибку создания в репозитории.
-                throw new NullReferenceException();//RequestedResourceNotFoundException();
-
             _uow.Save();
         }
 
         /// <inheritdoc/>
-        public void UpadteActor(string actorId, Actor actor)
+        public void Upadte(string actorId, ActorFullModel actor)
         {
             //TODO Проверить роль
 
-            if (actor == null || actorId == null)
-                throw new NullReferenceException();//RequestedResourceNotFoundException();        
-
-            var dbVideo = _uow.VideoRepository.Get(actorId);
-            if (ActorIsInDb(
-                f => string.Equals(f.Id, actorId, StringComparison.InvariantCultureIgnoreCase), out var actors))
+            if (actor == null 
+                || actorId == null 
+                  || !ActorIsInDb(
+                      f => string.Equals(f.Id, actorId, StringComparison.InvariantCultureIgnoreCase),
+                        out var actors))
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
             actor.Id = actorId;
@@ -59,7 +56,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public void DeleteActor(string id)
+        public void Delete(string id)
         {
             //TODO Проверить роль
 
@@ -71,7 +68,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public Actor GetActor(string id)
+        public ActorFullModel GetActorFullModel(string id)
         {
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -80,18 +77,36 @@ namespace Legendary.Business.Services
             if (actor == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            return _mapper.Map<ActorDb, Actor>(actor);
+            return _mapper.Map<ActorDb, ActorFullModel>(actor);
         }
 
         /// <inheritdoc/>
-        public List<Actor> GetAllActors()
+        public List<ActorFullModel> GetAllActorFullModels()
         {
             var actors = _uow.ActorRepository.GetAll();
             if (actors == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var actorsDto = actors.Select(s => _mapper.Map<Actor>(s)).ToList();
-            return actorsDto;
+            return actors.Select(s => _mapper.Map<ActorFullModel>(s)).ToList();
+        }
+
+        public List<ActorFullModel> GetActorFullModelByCountry(string countryId)
+        {
+            if (countryId == null ||
+                !ActorIsInDb(w => string.Equals(w.Id, countryId, StringComparison.InvariantCultureIgnoreCase),
+                    out var actors))
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            return actors.Select(s => _mapper.Map<ActorFullModel>(s)).ToList();
+        }
+
+        public List<ActorSmallModel> GetAllActorSmallModel()
+        {
+            var actors = _uow.ActorRepository.GetAll();
+            if (actors == null)
+                throw new NullReferenceException();//RequestedResourceNotFoundException();
+
+            return actors.Select(s => _mapper.Map<ActorSmallModel>(s)).ToList();
         }
 
         public void Dispose()

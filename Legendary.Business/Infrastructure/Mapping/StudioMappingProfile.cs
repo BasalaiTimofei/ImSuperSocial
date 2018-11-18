@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using Legendary.Business.Models;
+using Legendary.Business.Models.Studio;
 using Legendary.Data.Models.Studio;
 
 namespace Legendary.Business.Infrastructure.Mapping
@@ -10,7 +10,7 @@ namespace Legendary.Business.Infrastructure.Mapping
     {
         public StudioMappingProfile()
         {
-            CreateMap<StudioDb, Studio>()
+            CreateMap<StudioDb, StudioFullModel>()
                 .ForMember(f => f.Country, opt => opt.MapFrom(m => m.Cauntry))
                 .ForMember(q => q.AvgRating,
                     opt => opt.MapFrom(w =>
@@ -22,6 +22,8 @@ namespace Legendary.Business.Infrastructure.Mapping
                 .ForMember(f => f.Cauntry, opt => opt.Ignore())
                 .ForMember(f => f.Rating, opt => opt.Ignore())
                 .ForMember(f => f.Video, opt => opt.Ignore());
+
+            CreateMap<StudioDb, StudioSmallModel>();
         }
     }
 }

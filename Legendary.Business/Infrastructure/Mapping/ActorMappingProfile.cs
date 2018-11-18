@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using Legendary.Business.Models;
+using Legendary.Business.Models.Actor;
 using Legendary.Data.Models.Actor;
 
 namespace Legendary.Business.Infrastructure.Mapping
@@ -10,7 +10,7 @@ namespace Legendary.Business.Infrastructure.Mapping
     {
         public ActorMappingProfile()
         {
-            CreateMap<ActorDb, Actor>()
+            CreateMap<ActorDb, ActorFullModel>()
                 .ForMember(f => f.Country, opt => opt.MapFrom(m => m.Country))
                 .ForMember(f => f.AvgRating,
                     opt => opt.MapFrom(w =>
@@ -21,6 +21,8 @@ namespace Legendary.Business.Infrastructure.Mapping
                 .ReverseMap()
                 .ForMember(f => f.Rating, opt => opt.Ignore())
                 .ForMember(f => f.Country, opt => opt.MapFrom(m => m.Country));
+
+            CreateMap<ActorDb, ActorSmallModel>();
         }
     }
 }

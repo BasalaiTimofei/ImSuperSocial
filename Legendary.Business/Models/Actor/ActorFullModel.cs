@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace Legendary.Business.Models
+namespace Legendary.Business.Models.Actor
 {
     /// <summary>
     /// Actor DataTransferObject model.
     /// </summary>
-    public class Actor
+    public class ActorFullModel
     {
         /// <summary>
         /// Gets or sets actor Id.
@@ -34,7 +34,7 @@ namespace Legendary.Business.Models
 
         public override bool Equals(object obj)
         {
-            var actor = obj as Actor;
+            var actor = obj as ActorFullModel;
             return actor != null &&
                    Id == actor.Id &&
                    Name == actor.Name &&

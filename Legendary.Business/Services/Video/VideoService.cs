@@ -75,7 +75,7 @@ namespace Legendary.Business.Services.Video
         }
 
         /// <inheritdoc/>
-        public VideoFullModel UpdateVideo(string videoId, VideoFullModel video)
+        public void UpdateVideo(string videoId, VideoFullModel video)
         {
             //TODO Проверить роль
 
@@ -89,8 +89,6 @@ namespace Legendary.Business.Services.Video
 
             _uow.VideoRepository.Update(_mapper.Map<VideoDb>(video));
             _uow.Save();
-
-            return video;
         }
 
         public void Dispose()
