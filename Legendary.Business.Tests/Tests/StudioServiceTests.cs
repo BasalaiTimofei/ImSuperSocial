@@ -14,7 +14,7 @@ using Legendary.Data.Models.Video;
 using Moq;
 using NUnit.Framework;
 
-namespace Legendary.Business.Tests
+namespace Legendary.Business.Tests.Tests
 {
     public class StudioServiceTests
     {

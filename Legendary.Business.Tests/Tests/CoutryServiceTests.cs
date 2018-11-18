@@ -11,7 +11,7 @@ using Legendary.Data.Models.Studio;
 using Moq;
 using NUnit.Framework;
 
-namespace Legendary.Business.Tests
+namespace Legendary.Business.Tests.Tests
 {
     [TestFixture]
     public class CoutryServiceTests
@@ -72,6 +72,21 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
+        public void AddCountry_Get_GoodArgument_Return_Exception()
+        {
+            _selectCollectionCountry.Add(_countryDb);
+            _mockUow.Setup(s => s.CountryRepository.Find(It.IsAny<Predicate<CountryDb>>()))
+                .Returns(_selectCollectionCountry);
+
+            using (var countryService = new CountryService(_mapper, _mockUow.Object))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => countryService.Create(_countryDto));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
         public void AddCountry_Get_Null_Return_Exception()
         {
             _selectCollectionCountry.Add(_countryDb);
@@ -110,7 +125,21 @@ namespace Legendary.Business.Tests
         }
 
         [Test]
-        public void DeleteCountry_BadArgument_Return_Exception()
+        public void DeleteCountry_Get_GoodArgument_Return_Exception()
+        {
+            _mockUow.Setup(s => s.CountryRepository.Find(It.IsAny<Predicate<CountryDb>>()))
+                .Returns(_selectCollectionCountry);
+
+            using (var countryService = new CountryService(_mapper, _mockUow.Object))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => countryService.Delete(It.IsAny<string>()));
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void DeleteCountry_Get_Null_Return_Exception()
         {
             _mockUow.Setup(s => s.CountryRepository.Find(It.IsAny<Predicate<CountryDb>>()))
                 .Returns(_selectCollectionCountry);
@@ -193,6 +222,7 @@ namespace Legendary.Business.Tests
 
         }
 
+        [Test]
         public void GetCountry_ById_Get_GoodId_Return_Country()
         {
             var id = Guid.NewGuid().ToString();
@@ -274,6 +304,7 @@ namespace Legendary.Business.Tests
             }
         }
 
+        [Test]
         public void GetAllCountry_Return_OneCountry()
         {
             _selectCollectionCountry.Add(new CountryDb
@@ -328,6 +359,20 @@ namespace Legendary.Business.Tests
             using (var service = new CountryService(_mapper, _mockUow.Object))
             {
                 var result = Assert.Throws<NullReferenceException>(() =>  service.GetAll());
+
+                Assert.That(result, Is.TypeOf<NullReferenceException>());
+            }
+        }
+
+        [Test]
+        public void GetAllCountry_Return_Void_Exception()
+        {
+            _mockUow.Setup(s => s.CountryRepository.GetAll())
+                .Returns(_selectCollectionCountry);
+
+            using (var service = new CountryService(_mapper, _mockUow.Object))
+            {
+                var result = Assert.Throws<NullReferenceException>(() => service.GetAll());
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }

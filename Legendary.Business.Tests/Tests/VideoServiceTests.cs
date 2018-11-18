@@ -17,7 +17,7 @@ using Legendary.Data.Models.Country;
 using Legendary.Data.Models.Studio;
 
 
-namespace Legendary.Business.Tests
+namespace Legendary.Business.Tests.Tests
 {
     [TestFixture]
     public class VideoServiceTests

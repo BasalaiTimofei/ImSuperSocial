@@ -51,6 +51,11 @@ namespace Legendary.Business.Infrastructure
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new StudioMappingProfile()))))
                 .WhenInjectedInto<StudioService>();
+
+            Bind<IMapper>().ToMethod(ctx =>
+                    new Mapper(new MapperConfiguration(cfg =>
+                        cfg.AddProfile(new CategoryMappingProfile()))))
+                .WhenInjectedInto<CategoryService>();
         }
     }
 }

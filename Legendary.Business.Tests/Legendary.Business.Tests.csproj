@@ -67,10 +67,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActorServiceTests.cs" />
-    <Compile Include="CoutryServiceTests.cs" />
-    <Compile Include="StudioServiceTests.cs" />
-    <Compile Include="VideoServiceTests.cs" />
+    <Compile Include="Tests\ActorServiceTests.cs" />
+    <Compile Include="Tests\CategoryServiceTests.cs" />
+    <Compile Include="Tests\CoutryServiceTests.cs" />
+    <Compile Include="Tests\StudioServiceTests.cs" />
+    <Compile Include="Tests\VideoServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

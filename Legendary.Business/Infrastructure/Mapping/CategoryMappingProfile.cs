@@ -11,6 +11,9 @@ namespace Legendary.Business.Infrastructure.Mapping
         public CategoryMappingProfile()
         {
             CreateMap<CategoryDb, Category>()
+                .ForMember(f => f.Id, opt => opt.MapFrom(m => m.Id))
+                .ForMember(f => f.Name, opt => opt.MapFrom(m => m.Name))
+                .ForMember(f => f.ImgLink, opt => opt.MapFrom(m => m.ImgLink))
                 .ForMember(f => f.Rating,
                     opt => opt.MapFrom(w =>
                         w.Rating.Count == 0 ? 50
@@ -18,7 +21,11 @@ namespace Legendary.Business.Infrastructure.Mapping
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) < -50 ? 0
                         : (Math.Round(w.Rating.Average(e => e.Rating), 2) * 100) + 50))
                 .ReverseMap()
-                .ForMember(f => f.Rating, opt => opt.Ignore());
+                .ForMember(f => f.Rating, opt => opt.Ignore())
+                .ForMember(f => f.Id, opt => opt.MapFrom(m => m.Id))
+                .ForMember(f => f.Name, opt => opt.MapFrom(m => m.Name))
+                .ForMember(f => f.ImgLink, opt => opt.MapFrom(m => m.ImgLink));
+
         }
     }
 }
