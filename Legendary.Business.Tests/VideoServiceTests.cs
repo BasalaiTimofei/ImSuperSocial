@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using Legendary.Business.Models;
 using Legendary.Business.Models.Video;
@@ -21,7 +20,7 @@ using Legendary.Data.Models.Studio;
 namespace Legendary.Business.Tests
 {
     [TestFixture]
-    public class VideoService_Tests
+    public class VideoServiceTests
     {
         private Mapper _mapper;
         private MapperConfiguration _configuration;
@@ -30,13 +29,8 @@ namespace Legendary.Business.Tests
         private ICollection<VideoDb> _selectCollectionVideo;
         private VideoDb _videoDb;
         private VideoFullModel _videoFullModel;
-        private VideoItem _videoItem;
-        private VideoSmallModel _videoList;
 
         private CategoryDb _categoryDb;
-        private Category _categoryDto;
-
-        private VideoRatingDb _ratingDb;
 
         private ActorDb _actorDb;
 
@@ -97,45 +91,12 @@ namespace Legendary.Business.Tests
                 Studio = new StudioSmallModel()
             };
 
-            _videoList = new VideoSmallModel
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "VideoName",
-                ImgLink = "ImageReference",
-                GifLink = "GifReference"
-            };
-
-            _videoItem = new VideoItem
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "VideoName",
-                AvgRating = 50,
-                ReferenceOnVideo = "VideoReference",
-                DateCreate = DateTime.UtcNow,
-                Studio = new StudioSmallModel(),
-                Categories = new List<Category>(),
-                Actors = new List<ActorSmallModel>()
-            };
-
             _categoryDb = new CategoryDb
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "CategoryName",
                 Video = new List<VideoDb>()
             };
-
-            _categoryDto = new Category
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "CategoryName"
-            };
-
-            _ratingDb = new VideoRatingDb
-            {
-                Id = Guid.NewGuid().ToString(),
-                Rating = 1
-            };
-
 
             _configuration = new MapperConfiguration(cfg =>
             {

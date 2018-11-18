@@ -23,7 +23,16 @@ namespace Legendary.Business.Infrastructure.Mapping
                 .ForMember(f => f.Rating, opt => opt.Ignore())
                 .ForMember(f => f.Video, opt => opt.Ignore());
 
-            CreateMap<StudioDb, StudioSmallModel>();
+            CreateMap<StudioDb, StudioSmallModel>()
+                .ForMember(f => f.Id, opt => opt.MapFrom(m => m.Id))
+                .ForMember(f => f.Name, opt => opt.MapFrom(m => m.Name))
+                .ReverseMap()
+                .ForMember(f => f.Id, opt => opt.MapFrom(m => m.Id))
+                .ForMember(f => f.Name, opt => opt.MapFrom(m => m.Name))
+                .ForMember(f => f.Cauntry, opt => opt.Ignore())
+                .ForMember(f => f.Rating, opt => opt.Ignore())
+                .ForMember(f => f.ImgLink, opt => opt.Ignore())
+                .ForMember(f => f.Video, opt => opt.Ignore());
         }
     }
 }

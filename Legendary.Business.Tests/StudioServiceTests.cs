@@ -16,7 +16,7 @@ using NUnit.Framework;
 
 namespace Legendary.Business.Tests
 {
-    class StudioService_Tests
+    public class StudioServiceTests
     {
         private Mapper _mapper;
         private MapperConfiguration _configuration;
@@ -26,7 +26,6 @@ namespace Legendary.Business.Tests
         private CountryDb _countryDb;
         private StudioDb _studioDb;
         private StudioFullModel _studioFullModel;
-        private StudioSmallModel _studioSmallModel;
 
         [SetUp]
         public void SetUpMethod()
@@ -68,12 +67,6 @@ namespace Legendary.Business.Tests
                 ImgLink = "StudioImg",
                 AvgRating = 50,
                 Country = new Country()
-            };
-
-            _studioSmallModel = new StudioSmallModel
-            {
-                Id = Guid.NewGuid().ToString(),
-                Name = "StudioName"
             };
 
             _selectCollectionStudio = new List<StudioDb>();

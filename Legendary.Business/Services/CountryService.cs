@@ -99,10 +99,10 @@ namespace Legendary.Business.Services
             _uow.Dispose();
         }
 
-        private bool CountryIsInDb(Predicate<CountryDb> condition, out IEnumerable<CountryDb> video)
+        private bool CountryIsInDb(Predicate<CountryDb> condition, out IEnumerable<CountryDb> country)
         {
-            video = _uow.CountryRepository.Find(condition);
-            return video.Any();
+            country = _uow.CountryRepository.Find(condition);
+            return country.Any();
         }
 
         private bool CultureIsReal(string countryName)

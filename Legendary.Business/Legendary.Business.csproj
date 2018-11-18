@@ -58,6 +58,7 @@
     <Compile Include="Infrastructure\Mapping\StudioMappingProfile.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IActorService.cs" />
+    <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\ICountryService.cs" />
     <Compile Include="Interfaces\IStudioService.cs" />
     <Compile Include="Interfaces\Video\IVideoItemService.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Models\Video\VideoSmallModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActorService.cs" />
+    <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\StudioService.cs" />
     <Compile Include="Services\Video\VideoItemService.cs" />

@@ -57,6 +57,7 @@
     <Compile Include="Context\Configuration.cs" />
     <Compile Include="Models\Country\CountryDb.cs" />
     <Compile Include="Models\Rating\ActorRatingDb.cs" />
+    <Compile Include="Models\Rating\CategoryRatingDb.cs" />
     <Compile Include="Models\Rating\StudioRatingDb.cs" />
     <Compile Include="Models\Studio\StudioDb.cs" />
     <Compile Include="Models\User\UserDb.cs" />

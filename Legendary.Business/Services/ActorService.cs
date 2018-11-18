@@ -114,10 +114,10 @@ namespace Legendary.Business.Services
             _uow.Dispose();
         }
 
-        private bool ActorIsInDb(Predicate<ActorDb> condition, out IEnumerable<ActorDb> video)
+        private bool ActorIsInDb(Predicate<ActorDb> condition, out IEnumerable<ActorDb> actor)
         {
-            video = _uow.ActorRepository.Find(condition);
-            return video.Any();
+            actor = _uow.ActorRepository.Find(condition);
+            return actor.Any();
         }
     }
 }

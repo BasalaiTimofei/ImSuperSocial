@@ -115,10 +115,10 @@ namespace Legendary.Business.Services
         {
             _uow.Dispose();
         }
-        private bool StudioIsInDb(Predicate<StudioDb> condition, out IEnumerable<StudioDb> video)
+        private bool StudioIsInDb(Predicate<StudioDb> condition, out IEnumerable<StudioDb> studio)
         {
-            video = _uow.StudioRepository.Find(condition);
-            return video.Any();
+            studio = _uow.StudioRepository.Find(condition);
+            return studio.Any();
         }
 
     }

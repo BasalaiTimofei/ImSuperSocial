@@ -36,15 +36,17 @@ namespace Legendary.Data.Models.Video
                    Id == db.Id &&
                    Name == db.Name &&
                    ImgLink == db.ImgLink &&
+                   EqualityComparer<ICollection<CategoryRatingDb>>.Default.Equals(Rating, db.Rating) &&
                    EqualityComparer<ICollection<VideoDb>>.Default.Equals(Video, db.Video);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = -1470595130;
+            var hashCode = -1343139130;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Id);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ImgLink);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<CategoryRatingDb>>.Default.GetHashCode(Rating);
             hashCode = hashCode * -1521134295 + EqualityComparer<ICollection<VideoDb>>.Default.GetHashCode(Video);
             return hashCode;
         }

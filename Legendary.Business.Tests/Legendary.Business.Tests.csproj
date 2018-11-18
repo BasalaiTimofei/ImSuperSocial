@@ -69,8 +69,8 @@
   <ItemGroup>
     <Compile Include="ActorServiceTests.cs" />
     <Compile Include="CoutryServiceTests.cs" />
-    <Compile Include="StudioService_Tests.cs" />
-    <Compile Include="VideoService_Tests.cs" />
+    <Compile Include="StudioServiceTests.cs" />
+    <Compile Include="VideoServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
