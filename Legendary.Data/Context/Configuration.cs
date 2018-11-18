@@ -35,6 +35,10 @@ namespace Legendary.Data.Context
             HasKey(k => k.Id);
             HasMany(m => m.Video)
                 .WithMany(m => m.Categories);
+            HasMany(m => m.Rating)
+                .WithRequired(r => r.Category);
+
+            Property(p => p.ImgLink).IsRequired();
             Property(p => p.Name).IsRequired().HasMaxLength(50);
         }
     }
@@ -92,6 +96,20 @@ namespace Legendary.Data.Context
             HasKey(k => k.Id);
 
             HasRequired(r => r.Actor)
+                .WithMany(m => m.Rating);
+            HasRequired(r => r.User)
+                .WithMany( /*r => r.Rating*/);
+
+            Property(p => p.Rating).IsRequired();
+        }
+    }
+    public class CategoryRatingDbConfiguration : EntityTypeConfiguration<CategoryRatingDb>
+    {
+        public CategoryRatingDbConfiguration()
+        {
+            HasKey(k => k.Id);
+
+            HasRequired(r => r.Category)
                 .WithMany(m => m.Rating);
             HasRequired(r => r.User)
                 .WithMany( /*r => r.Rating*/);
