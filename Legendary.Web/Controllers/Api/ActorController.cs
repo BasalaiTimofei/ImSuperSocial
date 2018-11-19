@@ -188,6 +188,5 @@ namespace Legendary.Web.Controllers.Api
                 return InternalServerError();
             }
         }
-
     }
 }
