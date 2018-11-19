@@ -12,7 +12,7 @@ namespace Legendary.Business.Infrastructure.Mapping
         {
             CreateMap<VideoDb, VideoSmallModel>();
 
-            CreateMap<VideoDb, VideoItem>()
+            CreateMap<VideoDb, VideoItemModel>()
                 .ForMember(q => q.Categories, opt => opt.MapFrom(w => w.Categories))
                 .ForMember(q => q.Actors, opt => opt.MapFrom(w => w.Actor))
                 .ForMember(q => q.Studio, opt => opt.MapFrom(w => w.Studio))

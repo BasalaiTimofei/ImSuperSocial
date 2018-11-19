@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Legendary.Business.Infrastructure.Mapping;
 using Legendary.Business.Services;
-using Legendary.Business.Services.Video;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Repositories;
@@ -25,12 +24,12 @@ namespace Legendary.Business.Infrastructure
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
-                .WhenInjectedInto<VideoListService>();
+                .WhenInjectedInto<VideoService>();
 
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>
                         cfg.AddProfile(new VideoMappingProfile()))))
-                .WhenInjectedInto<VideoItemService>();
+                .WhenInjectedInto<VideoService>();
 
             Bind<IMapper>().ToMethod(ctx =>
                     new Mapper(new MapperConfiguration(cfg =>

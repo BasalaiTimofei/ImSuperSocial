@@ -61,9 +61,7 @@
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\ICountryService.cs" />
     <Compile Include="Interfaces\IStudioService.cs" />
-    <Compile Include="Interfaces\Video\IVideoItemService.cs" />
-    <Compile Include="Interfaces\Video\IVideoListService.cs" />
-    <Compile Include="Interfaces\Video\IVideoService.cs" />
+    <Compile Include="Interfaces\IVideoService.cs" />
     <Compile Include="Infrastructure\Mapping\CategoryMappingProfile.cs" />
     <Compile Include="Infrastructure\Mapping\CommentMappingProfile.cs" />
     <Compile Include="Infrastructure\Mapping\VideoMappingProfile.cs" />
@@ -75,16 +73,14 @@
     <Compile Include="Models\Studio\StudioFullModel.cs" />
     <Compile Include="Models\Studio\StudioSmallModel.cs" />
     <Compile Include="Models\Video\VideoFullModel.cs" />
-    <Compile Include="Models\Video\VideoItem.cs" />
+    <Compile Include="Models\Video\VideoItemModel.cs" />
     <Compile Include="Models\Video\VideoSmallModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActorService.cs" />
     <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\CountryService.cs" />
     <Compile Include="Services\StudioService.cs" />
-    <Compile Include="Services\Video\VideoItemService.cs" />
-    <Compile Include="Services\Video\VideoListService.cs" />
-    <Compile Include="Services\Video\VideoService.cs" />
+    <Compile Include="Services\VideoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Legendary.Data\Legendary.Data.csproj">

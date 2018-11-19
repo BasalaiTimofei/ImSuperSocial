@@ -8,7 +8,7 @@ namespace Legendary.Business.Models.Video
     /// <summary>
     /// Video model individual view.
     /// </summary>
-    public class VideoItem
+    public class VideoItemModel
     {
         /// <summary>
         /// Gets or sets Id.
@@ -52,7 +52,7 @@ namespace Legendary.Business.Models.Video
 
         public override bool Equals(object obj)
         {
-            var item = obj as VideoItem;
+            var item = obj as VideoItemModel;
             return item != null &&
                    Id == item.Id &&
                    Name == item.Name &&
