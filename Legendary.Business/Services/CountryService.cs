@@ -55,9 +55,10 @@ namespace Legendary.Business.Services
             //TODO Проверить роль
             if (countryId == null 
                 || countryModel == null 
-                    || !CountryIsInDb(
-                        c => string.Equals(c.Id, countryId, StringComparison.InvariantCultureIgnoreCase),
-                            out var countries))
+                    || !CultureIsReal(countryModel.CountryName)
+                        || !CountryIsInDb(
+                            c => string.Equals(c.Id, countryId, StringComparison.InvariantCultureIgnoreCase),
+                                out var countries))
                 //TODO Вернуть ошибку о создании
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 

@@ -235,7 +235,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetStudioFullModel(id);
+                var result = service.Get_FullModel(id);
 
                 Assert.That(result, Is.TypeOf<StudioFullModel>());
             }
@@ -251,7 +251,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetStudioFullModel(id));
+                var result = Assert.Throws<NullReferenceException>(() => service.Get_FullModel(id));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -266,7 +266,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetStudioFullModel(It.IsAny<string>()));
+                var result = Assert.Throws<NullReferenceException>(() => service.Get_FullModel(It.IsAny<string>()));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -280,7 +280,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetStudioFullModel(null));
+                var result = Assert.Throws<NullReferenceException>(() => service.Get_FullModel(null));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -295,7 +295,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioFullModels();
+                var result = service.GetAll_FullModel();
 
                 Assert.That(result, Is.TypeOf<List<StudioFullModel>>());
             }
@@ -309,7 +309,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioFullModels();
+                var result = service.GetAll_FullModel();
 
                 Assert.That(result.Count, Is.EqualTo(1));
             }
@@ -333,7 +333,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioFullModels();
+                var result = service.GetAll_FullModel();
 
                 Assert.That(result.Count, Is.EqualTo(2));
             }
@@ -348,7 +348,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetAllStudioFullModels());
+                var result = Assert.Throws<NullReferenceException>(() => service.GetAll_FullModel());
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -364,9 +364,9 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioSmallModelByCountry(id);
+                var result = service.GetAll_By_Country_FullModel(id);
 
-                Assert.That(result, Is.TypeOf<List<StudioSmallModel>>());
+                Assert.That(result, Is.TypeOf<List<StudioFullModel>>());
             }
         }
 
@@ -389,7 +389,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioSmallModelByCountry(id);
+                var result = service.GetAll_By_Country_FullModel(id);
 
                 Assert.That(result.Count, Is.EqualTo(1));
             }
@@ -423,7 +423,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = service.GetAllStudioSmallModelByCountry(id);
+                var result = service.GetAll_By_Country_FullModel(id);
 
                 Assert.That(result.Count, Is.EqualTo(2));
             }
@@ -437,7 +437,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetAllStudioSmallModelByCountry(It.IsAny<string>()));
+                var result = Assert.Throws<NullReferenceException>(() => service.GetAll_By_Country_FullModel(It.IsAny<string>()));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }
@@ -452,7 +452,7 @@ namespace Legendary.Business.Tests.Tests
 
             using (var service = new StudioService(_mapper, _mockUow.Object))
             {
-                var result = Assert.Throws<NullReferenceException>(() => service.GetAllStudioSmallModelByCountry(It.IsAny<string>()));
+                var result = Assert.Throws<NullReferenceException>(() => service.GetAll_By_Country_FullModel(It.IsAny<string>()));
 
                 Assert.That(result, Is.TypeOf<NullReferenceException>());
             }

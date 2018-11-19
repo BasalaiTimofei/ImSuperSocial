@@ -65,7 +65,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public StudioFullModel GetStudioFullModel(string studioId)
+        public StudioFullModel Get_FullModel(string studioId)
         {
             if (studioId == null)
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
@@ -80,7 +80,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioFullModel> GetAllStudioFullModels()
+        public List<StudioFullModel> GetAll_FullModel()
         {
             var studio = _uow.StudioRepository.GetAll();
             if (studio == null || studio.Count() == 0)
@@ -91,7 +91,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioSmallModel> GetAllStudioSmallModel()
+        public List<StudioSmallModel> GetAll_SmallModel()
         {
             var studio = _uow.StudioRepository.GetAll();
             if (studio == null || studio.Count() == 0)
@@ -102,19 +102,24 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioSmallModel> GetAllStudioSmallModelByCountry(string countryId)
+        public List<StudioFullModel> GetAll_By_Country_FullModel(string countryId)
         {
             if (countryId == null
                 || !StudioIsInDb(s => string.Equals(s.Cauntry.Id, countryId, StringComparison.InvariantCultureIgnoreCase), out var studio))
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
-            return studio.Select(s => _mapper.Map<StudioDb, StudioSmallModel>(s)).ToList();
+            return studio.Select(s => _mapper.Map<StudioDb, StudioFullModel>(s)).ToList();
         }
 
         public void Dispose()
         {
             _uow.Dispose();
         }
+        ~StudioService()
+        {
+            Dispose();
+        }
+
         private bool StudioIsInDb(Predicate<StudioDb> condition, out IEnumerable<StudioDb> studio)
         {
             studio = _uow.StudioRepository.Find(condition);

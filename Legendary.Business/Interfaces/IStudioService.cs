@@ -27,22 +27,22 @@ namespace Legendary.Business.Interfaces
         /// </summary>
         /// <param name="studioId"></param>
         /// <returns>A <see cref="StudioFullModel"/></returns>
-        StudioFullModel GetStudioFullModel(string studioId);
+        StudioFullModel Get_FullModel(string studioId);
         /// <summary>
         /// Get All studio(Full model).
         /// </summary>
         /// <returns><see cref="List{StudioFullModel}"/></returns>
-        List<StudioFullModel> GetAllStudioFullModels();
+        List<StudioFullModel> GetAll_FullModel();
         /// <summary>
         /// Get studio(Small model).
         /// </summary>
         /// <returns><see cref="List{StudioSmallModel}"/></returns>
-        List<StudioSmallModel> GetAllStudioSmallModel();
+        List<StudioSmallModel> GetAll_SmallModel();
         /// <summary>
         /// Get all studio by County
         /// </summary>
         /// <param name="countryId"></param>
         /// <returns><see cref="List{StudioSmallModel}"/></returns>
-        List<StudioSmallModel> GetAllStudioSmallModelByCountry(string countryId);
+        List<StudioFullModel> GetAll_By_Country_FullModel(string countryId);
     }
 }
