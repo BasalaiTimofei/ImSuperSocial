@@ -38,7 +38,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public void Upadte(string actorId, ActorFullModel actor)
+        public void Update(string actorId, ActorFullModel actor)
         {
             //TODO Проверить роль
 
@@ -68,7 +68,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public ActorFullModel GetActorFullModel(string id)
+        public ActorFullModel Get_FullModel(string id)
         {
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -81,7 +81,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<ActorFullModel> GetAllActorFullModels()
+        public List<ActorFullModel> GetAll_FullModel()
         {
             var actors = _uow.ActorRepository.GetAll();
             if (actors == null)
@@ -90,7 +90,7 @@ namespace Legendary.Business.Services
             return actors.Select(s => _mapper.Map<ActorFullModel>(s)).ToList();
         }
 
-        public List<ActorFullModel> GetActorFullModelByCountry(string countryId)
+        public List<ActorFullModel> GetAll_By_Country_FullModel(string countryId)
         {
             if (countryId == null ||
                 !ActorIsInDb(w => string.Equals(w.Id, countryId, StringComparison.InvariantCultureIgnoreCase),
@@ -100,7 +100,7 @@ namespace Legendary.Business.Services
             return actors.Select(s => _mapper.Map<ActorFullModel>(s)).ToList();
         }
 
-        public List<ActorSmallModel> GetAllActorSmallModel()
+        public List<ActorSmallModel> GetAll_SmallModel()
         {
             var actors = _uow.ActorRepository.GetAll();
             if (actors == null)
@@ -112,6 +112,11 @@ namespace Legendary.Business.Services
         public void Dispose()
         {
             _uow.Dispose();
+        }
+
+        ~ ActorService()
+        {
+            Dispose();
         }
 
         private bool ActorIsInDb(Predicate<ActorDb> condition, out IEnumerable<ActorDb> actor)

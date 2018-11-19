@@ -3,23 +3,23 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Legendary.Business.Interfaces;
-using Legendary.Business.Models.Studio;
+using Legendary.Business.Models.Actor;
 
 namespace Legendary.Web.Controllers.Api
 {
-    [RoutePrefix("api/studio")]
-    public class StudioController : ApiController
+    [RoutePrefix("api/actor")]
+    public class ActorController : ApiController
     {
-        private readonly IStudioService _service;
-        public StudioController(IStudioService service)
+        private readonly IActorService _service;
+        public ActorController(IActorService service)
         {
             _service = service;
         }
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetAll Studies result", typeof(IEnumerable<StudioFullModel>))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "Studio were not found in database")]
+        [SwaggerResponse(HttpStatusCode.OK, "GetAll Actors result", typeof(IEnumerable<ActorFullModel>))]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Actor were not found in database")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
         [HttpGet, Route("fullModel")]
@@ -41,8 +41,8 @@ namespace Legendary.Web.Controllers.Api
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetAll Studies result", typeof(IEnumerable<StudioSmallModel>))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "Studio were not found in database")]
+        [SwaggerResponse(HttpStatusCode.OK, "GetAll Actors result", typeof(IEnumerable<ActorSmallModel>))]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Actor were not found in database")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
         [HttpGet, Route("smallModel")]
@@ -64,16 +64,16 @@ namespace Legendary.Web.Controllers.Api
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetById studio result", typeof(StudioFullModel))]
+        [SwaggerResponse(HttpStatusCode.OK, "GetById Actor result", typeof(ActorFullModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Incorrect Id")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
          */
-        [HttpGet, Route("fullModel/{studioId:string}")]
-        public IHttpActionResult Get_By_Id_FullModel([FromUri] string studioId)
+        [HttpGet, Route("fullModel/{actorId:string}")]
+        public IHttpActionResult Get_By_Id_FullModel([FromUri] string actorId)
         {
             try
             {
-                return Ok(_service.Get_FullModel(studioId));
+                return Ok(_service.Get_FullModel(actorId));
             }
             catch (NullReferenceException)
             {
@@ -87,7 +87,7 @@ namespace Legendary.Web.Controllers.Api
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetByCountryId studio result", typeof(IEnumerable<StudioFullModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, "GetByCountryId Actor result", typeof(IEnumerable<StudioFullModel>))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Incorrect Id")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
@@ -109,12 +109,12 @@ namespace Legendary.Web.Controllers.Api
         }
 
         /*
-        [SwaggerResponse(HttpStatusCode.Created, "Studio was successfully added", typeof(StudioFullModel))]
+        [SwaggerResponse(HttpStatusCode.Created, "Actor was successfully added", typeof(ActorFullModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Incorrect model")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
         [HttpPost, Route("")]
-        public IHttpActionResult Create([FromBody] StudioFullModel model)
+        public IHttpActionResult Create([FromBody] ActorFullModel model)
         {
             try
             {
@@ -136,21 +136,21 @@ namespace Legendary.Web.Controllers.Api
         }
 
         /*
-        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Updates an existed studio.")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Updates an existed actor.")]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.Conflict)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
         */
-        [HttpPut, Route("{studioId:string}")]
-        public IHttpActionResult Update([FromUri] string studioId, [FromBody] StudioFullModel model)
+        [HttpPut, Route("{actorId:string}")]
+        public IHttpActionResult Update([FromUri] string actorId, [FromBody] ActorFullModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest();
 
-                _service.Update(studioId, model);
+                _service.Update(actorId, model);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
 
             }
@@ -165,18 +165,18 @@ namespace Legendary.Web.Controllers.Api
         }
 
         /*
-        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Deletes an existed studio.")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Deletes an existed actor.")]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.Conflict)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
         */
-        [HttpDelete, Route("{studioId:string}")]
-        public IHttpActionResult Delete([FromUri] string studioId)
+        [HttpDelete, Route("{actorId:string}")]
+        public IHttpActionResult Delete([FromUri] string actorId)
         {
             try
             {
-                _service.Delete(studioId);
+                _service.Delete(actorId);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
             }
             catch (NullReferenceException)
@@ -188,5 +188,6 @@ namespace Legendary.Web.Controllers.Api
                 return InternalServerError();
             }
         }
+
     }
 }

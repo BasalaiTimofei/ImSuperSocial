@@ -100,6 +100,11 @@ namespace Legendary.Business.Services
             _uow.Dispose();
         }
 
+        ~ CountryService()
+        {
+            Dispose();
+        }
+
         private bool CountryIsInDb(Predicate<CountryDb> condition, out IEnumerable<CountryDb> country)
         {
             country = _uow.CountryRepository.Find(condition);

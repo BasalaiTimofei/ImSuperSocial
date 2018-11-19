@@ -104,6 +104,11 @@ namespace Legendary.Business.Services
             _uow.Dispose();
         }
 
+        ~ CategoryService()
+        {
+            Dispose();
+        }
+
         private bool CategoryIsInDb(Predicate<CategoryDb> condition, out IEnumerable<CategoryDb> category)
         {
             category = _uow.CategoryRepository.Find(condition);
