@@ -7,18 +7,18 @@ using Legendary.Business.Models;
 
 namespace Legendary.Web.Controllers.Api
 {
-    public class CountryController : ApiController
+    public class CategoryController : ApiController
     {
-        private readonly ICountryService _service;
-        public CountryController(ICountryService service)
+        private readonly ICategoryService _service;
+        public CategoryController(ICategoryService service)
         {
             _service = service;
         }
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetAll Countries result", typeof(IEnumerable<Country>))]
-        [SwaggerResponse(HttpStatusCode.NotFound, "Country were not found in database")]
+        [SwaggerResponse(HttpStatusCode.OK, "GetAll Categories result", typeof(IEnumerable<Category>))]
+        [SwaggerResponse(HttpStatusCode.NotFound, "Category were not found in database")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
         [HttpGet, Route("")]
@@ -40,16 +40,16 @@ namespace Legendary.Web.Controllers.Api
 
         /*
         [SwaggerResponseRemoveDefaults]
-        [SwaggerResponse(HttpStatusCode.OK, "GetById Country result", typeof(Country))]
+        [SwaggerResponse(HttpStatusCode.OK, "GetById Category result", typeof(Category))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Incorrect Id")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
          */
-        [HttpGet, Route("{countryId:string}")]
-        public IHttpActionResult Get_By_Id_FullModel([FromUri] string countryId)
+        [HttpGet, Route("{categoryId:string}")]
+        public IHttpActionResult Get([FromUri] string categoryId)
         {
             try
             {
-                return Ok(_service.Get(countryId));
+                return Ok(_service.Get(categoryId));
             }
             catch (NullReferenceException)
             {
@@ -63,12 +63,12 @@ namespace Legendary.Web.Controllers.Api
 
 
         /*
-        [SwaggerResponse(HttpStatusCode.Created, "Country was successfully added", typeof(Country))]
+        [SwaggerResponse(HttpStatusCode.Created, "Category was successfully added", typeof(Category))]
         [SwaggerResponse(HttpStatusCode.BadRequest, "Incorrect model")]
         [SwaggerResponse(HttpStatusCode.InternalServerError, "Unhandled exception has been thrown during the request.")]
         */
         [HttpPost, Route("")]
-        public IHttpActionResult Create([FromBody] Country model)
+        public IHttpActionResult Create([FromBody] Category model)
         {
             try
             {
@@ -90,21 +90,21 @@ namespace Legendary.Web.Controllers.Api
         }
 
         /*
-        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Updates an existed Country.")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Updates an existed Category.")]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.Conflict)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
         */
-        [HttpPut, Route("{countryId:string}")]
-        public IHttpActionResult Update([FromUri] string countryId, [FromBody] Country model)
+        [HttpPut, Route("{categoryId:string}")]
+        public IHttpActionResult Update([FromUri] string categoryId, [FromBody] Category model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return BadRequest();
 
-                _service.Update(countryId, model);
+                _service.Update(categoryId, model);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
 
             }
@@ -119,18 +119,18 @@ namespace Legendary.Web.Controllers.Api
         }
 
         /*
-        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Deletes an existed Country.")]
+        [SwaggerResponse(HttpStatusCode.NoContent, Description = "Deletes an existed Category.")]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.Conflict)]
         [SwaggerResponse(HttpStatusCode.InternalServerError)]
         */
-        [HttpDelete, Route("{countryId:string}")]
-        public IHttpActionResult Delete([FromUri] string countryId)
+        [HttpDelete, Route("{categoryId:string}")]
+        public IHttpActionResult Delete([FromUri] string categoryId)
         {
             try
             {
-                _service.Delete(countryId);
+                _service.Delete(categoryId);
                 return ResponseMessage(Request.CreateResponse(HttpStatusCode.NoContent));
             }
             catch (NullReferenceException)

@@ -20,6 +20,7 @@ namespace Legendary.Business.Models.Video
         /// </summary>
         public string Name { get; set; }
 
+        //TODO Возможно вынести Categories!
         /// <summary>
         /// Gets or sets collection Categories
         /// </summary>
