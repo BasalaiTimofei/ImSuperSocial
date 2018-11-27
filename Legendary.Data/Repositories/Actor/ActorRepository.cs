@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
@@ -16,39 +17,43 @@ namespace Legendary.Data.Repositories.Actor
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<ActorDb> GetAll()
+        public async Task<List<ActorDb>> GetAll()
         {
-            return _legendaryContext.Actors;
+            return await _legendaryContext.Actors.ToListAsync();
         }
 
-        public ActorDb Get(string id)
+        public async Task<ActorDb> Get(string id)
         {
-            return _legendaryContext.Actors.First(f =>
+            return await _legendaryContext.Actors.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<ActorDb> Find(Predicate<ActorDb> predicate)
+        public async Task<List<ActorDb>> Find(Predicate<ActorDb> predicate)
         {
             var condition = new Func<ActorDb, bool>(predicate);
-            return _legendaryContext.Actors.Where(condition).ToList();
+            return await Task.Run(() => _legendaryContext.Actors.Where(condition).ToList());
         }
 
-        public void Create(ActorDb item)
+        public async Task Create(ActorDb item)
         {
+            item.Id = Guid.NewGuid().ToString();
             _legendaryContext.Actors.Add(item);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(ActorDb item)
+        public async Task Update(ActorDb item)
         {
             _legendaryContext.Entry(item).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var actor = _legendaryContext.Actors.First(f =>
+            var actor = await _legendaryContext.Actors.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (actor != null)
                 _legendaryContext.Actors.Remove(actor);
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Legendary.Business.Interfaces;
 using Legendary.Business.Models.Studio;
@@ -21,7 +22,7 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public void Create(StudioFullModel studioModel)
+        public async Task Create(StudioFullModel studioModel)
         {
             //TODO Проверка на роль
             if (studioModel == null
@@ -32,12 +33,11 @@ namespace Legendary.Business.Services
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
             studioModel.Id = Guid.NewGuid().ToString();
-            _uow.StudioRepository.Create(_mapper.Map<StudioDb>(studioModel));
-            _uow.Save();
+            await _uow.StudioRepository.Create(_mapper.Map<StudioDb>(studioModel));
         }
 
         /// <inheritdoc/>
-        public void Update(string studioId, StudioFullModel studioModel)
+        public async Task Update(string studioId, StudioFullModel studioModel)
         {
             //TODO Проверка на роль
             if (studioModel == null
@@ -47,12 +47,11 @@ namespace Legendary.Business.Services
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
             studioModel.Id = studioId;
-            _uow.StudioRepository.Update(_mapper.Map<StudioDb>(studioModel));
-            _uow.Save();
+            await _uow.StudioRepository.Update(_mapper.Map<StudioDb>(studioModel));
         }
 
         /// <inheritdoc/>
-        public void Delete(string studioId)
+        public async Task Delete(string studioId)
         {
             //TODO Проверка на роль
             if (studioId == null
@@ -60,17 +59,16 @@ namespace Legendary.Business.Services
                     out var studio))
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
             
-            _uow.StudioRepository.Delete(studioId);
-            _uow.Save();
+            await _uow.StudioRepository.Delete(studioId);
         }
 
         /// <inheritdoc/>
-        public StudioFullModel Get_FullModel(string studioId)
+        public async Task<StudioFullModel> Get_FullModel(string studioId)
         {
             if (studioId == null)
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
-            var studio = _uow.StudioRepository.Get(studioId);
+            var studio = await _uow.StudioRepository.Get(studioId);
 
             if (studio == null)
                 //TODO Вернуть ошибку repository
@@ -80,10 +78,10 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioFullModel> GetAll_FullModel()
+        public async Task<List<StudioFullModel>> GetAll_FullModel()
         {
-            var studio = _uow.StudioRepository.GetAll();
-            if (studio == null || studio.Count() == 0)
+            var studio = await _uow.StudioRepository.GetAll();
+            if (studio == null || studio.Count == 0)
                 //TODO Вернуть ошибку repository
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
@@ -91,10 +89,10 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioSmallModel> GetAll_SmallModel()
+        public async Task<List<StudioSmallModel>> GetAll_SmallModel()
         {
-            var studio = _uow.StudioRepository.GetAll();
-            if (studio == null || studio.Count() == 0)
+            var studio = await _uow.StudioRepository.GetAll();
+            if (studio == null || studio.Count == 0)
                 //TODO Вернуть ошибку repository
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
@@ -102,10 +100,14 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<StudioFullModel> GetAll_By_Country_FullModel(string countryId)
+        public async Task<List<StudioFullModel>> GetAll_By_Country_FullModel(string countryId)
         {
-            if (countryId == null
-                || !StudioIsInDb(s => string.Equals(s.Cauntry.Id, countryId, StringComparison.InvariantCultureIgnoreCase), out var studio))
+            if (countryId == null)
+                throw new NullReferenceException(); //RequestedResourceNotFoundException();
+
+            var studio = await _uow.StudioRepository.Find(s =>
+                string.Equals(s.Cauntry.Id, countryId, StringComparison.InvariantCultureIgnoreCase));
+            if(studio == null)
                 throw new NullReferenceException(); //RequestedResourceNotFoundException();
 
             return studio.Select(s => _mapper.Map<StudioDb, StudioFullModel>(s)).ToList();
@@ -122,7 +124,7 @@ namespace Legendary.Business.Services
 
         private bool StudioIsInDb(Predicate<StudioDb> condition, out IEnumerable<StudioDb> studio)
         {
-            studio = _uow.StudioRepository.Find(condition);
+            studio = _uow.StudioRepository.Find(condition).Result;
             return studio.Any();
         }
 

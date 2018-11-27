@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Legendary.Data.Models.Actor;
 using Legendary.Data.Models.Country;
 using Legendary.Data.Models.Rating;
@@ -19,6 +20,6 @@ namespace Legendary.Data.Interfaces
 
         IRepository<StudioDb> StudioRepository { get; }
 
-        void Save();
+        Task Save();
     }
 }

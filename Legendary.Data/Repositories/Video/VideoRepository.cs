@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
@@ -16,40 +17,45 @@ namespace Legendary.Data.Repositories.Video
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<VideoDb> GetAll()
+        public async Task<List<VideoDb>> GetAll()
         {
-            return _legendaryContext.Video.ToList();
+            return await _legendaryContext.Video.ToListAsync();
         }
 
-        public VideoDb Get(string id)
+        public async Task<VideoDb> Get(string id)
         {
-            return _legendaryContext.Video.First(f =>
+            return await _legendaryContext.Video.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<VideoDb> Find(Predicate<VideoDb> predicate)
+        public async Task<List<VideoDb>> Find(Predicate<VideoDb> predicate)
         {
             var condition = new Func<VideoDb, bool>(predicate);
-            return _legendaryContext.Video.Where(condition).ToList();
+
+            return await Task.Run(() => _legendaryContext.Video.Where(condition).ToList());
         }
 
-        public void Create(VideoDb video)
+        public async Task Create(VideoDb video)
         {
+            video.Id = Guid.NewGuid().ToString();
             video.DateCreate = DateTime.Now;
             _legendaryContext.Video.Add(video);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(VideoDb video)
+        public async Task Update(VideoDb video)
         {
             _legendaryContext.Entry(video).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var video = _legendaryContext.Video.First(f =>
+            var video = await _legendaryContext.Video.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (video != null)
                 _legendaryContext.Video.Remove(video);
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

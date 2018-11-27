@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Legendary.Business.Interfaces;
 using Legendary.Business.Models.Video;
@@ -19,29 +20,25 @@ namespace Legendary.Business.Services
             _uow = uow;
         }
 
-        public void Create(VideoFullModel video)
+        public async Task Create(VideoFullModel video)
         {
-            //TODO Проверить роль (тк. FullModel может видеть только адм, модер)
-
+            //TODO Плолучить ид того кто добавил.
+            //video.Creator = User.Id;
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            video.Id = Guid.NewGuid().ToString();
-
-            _uow.VideoRepository.Create(_mapper.Map<VideoDb>(video));
-
-            _uow.Save();
+            await _uow.VideoRepository.Create(_mapper.Map<VideoDb>(video));
         }
 
         /// <inheritdoc/>
-        public VideoFullModel Get_FullModel(string id)
+        public async Task<VideoFullModel> Get_FullModel(string id)
         {
-            //TODO Проверить роль (тк. FullModel может видеть только адм, модер)
+            //TODO Проверить роль и ид (тк. FullModel может видеть только адм, модер, и тот кто добавил видео)
 
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dbVideo = _uow.VideoRepository.Get(id);
+            var dbVideo = await _uow.VideoRepository.Get(id);
             if (dbVideo == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
@@ -49,11 +46,11 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<VideoFullModel> GetAll_FullModel()
+        public async Task<List<VideoFullModel>> GetAll_FullModel()
         {
-            //TODO Проверить роль (тк. FullModel может видеть только адм, модер)
+            //TODO Проверить роль и ид (тк. FullModel может видеть только адм, модер, и тот кто добавил видео)
 
-            var dbVideo = _uow.VideoRepository.GetAll();
+            var dbVideo = await _uow.VideoRepository.GetAll();
             if (dbVideo == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
@@ -63,21 +60,20 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            //TODO Проверить роль (тк. FullModel может видеть только адм, модер)
+            //TODO Проверить роль и ид (тк. FullModel может видеть только адм, модер, и тот кто добавил видео)
 
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            _uow.VideoRepository.Delete(id);
-            _uow.Save();
+            await _uow.VideoRepository.Delete(id);
         }
 
         /// <inheritdoc/>
-        public void Update(string videoId, VideoFullModel video)
+        public async Task Update(string videoId, VideoFullModel video)
         {
-            //TODO Проверить роль (тк. FullModel может видеть только адм, модер)
+            //TODO Проверить роль и ид (тк. FullModel может видеть только адм, модер, и тот кто добавил видео)
 
             if (video == null || videoId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
@@ -87,14 +83,13 @@ namespace Legendary.Business.Services
                 //TODO Вернуть ошибку о том что такой продукт есть
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            _uow.VideoRepository.Update(_mapper.Map<VideoDb>(video));
-            _uow.Save();
+            await _uow.VideoRepository.Update(_mapper.Map<VideoDb>(video));
         }
 
         /// <inheritdoc/>
-        public VideoItemModel Get_ItemModel(string id)
+        public async Task<VideoItemModel> Get_ItemModel(string id)
         {
-            var video = _uow.VideoRepository.Get(id);
+            var video = await _uow.VideoRepository.Get(id);
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
@@ -102,22 +97,22 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public VideoItemModel GetRandom_ItemModel()
+        public async Task<VideoItemModel> GetRandom_ItemModel()
         {
-            var dbVideo = _uow.VideoRepository.GetAll().ToArray();
+            var dbVideo =  await _uow.VideoRepository.GetAll();
 
-            if (dbVideo.Length == 0)
+            if (dbVideo.Count == 0)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var video = dbVideo[new Random().Next(0, dbVideo.Length)];
+            var video = dbVideo[new Random().Next(0, dbVideo.Count)];
 
             return _mapper.Map<VideoDb, VideoItemModel>(video);
         }
 
         /// <inheritdoc/>
-        public List<VideoSmallModel> GetAll_SmallModel()
+        public async Task<List<VideoSmallModel>> GetAll_SmallModel()
         {
-            var dbVideo = _uow.VideoRepository.GetAll();
+            var dbVideo = await _uow.VideoRepository.GetAll();
             if (dbVideo == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
@@ -127,11 +122,11 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public VideoSmallModel Get_SmallModel(string id)
+        public async Task<VideoSmallModel> Get_SmallModel(string id)
         {
             if (id == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
-            var video = _uow.VideoRepository.Get(id);
+            var video = await _uow.VideoRepository.Get(id);
             if (video == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
@@ -139,65 +134,58 @@ namespace Legendary.Business.Services
         }
 
         /// <inheritdoc/>
-        public List<VideoSmallModel> Get_ByActor_SmallModel(string actorId)
+        public async Task<List<VideoSmallModel>> Get_ByActor_SmallModel(string actorId)
         {
             if (actorId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
-
-            if (!VidoIsInDb(s =>
+            var video = await _uow.VideoRepository.Find(s =>
                 s.Actor.Select(e => string.Equals(e.Id, actorId, StringComparison.InvariantCultureIgnoreCase))
-                    .First(), out var video))
+                    .First());
+            if (video == null)
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
-
-            return dtoVideo;
+            return video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
         }
 
         /// <inheritdoc/>
-        public List<VideoSmallModel> Get_ByCategory_SmallModel(string categoryId)
+        public async Task<List<VideoSmallModel>> Get_ByCategory_SmallModel(string categoryId)
         {
             if (categoryId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
-
-            if (!VidoIsInDb(s =>
+            var video = await _uow.VideoRepository.Find(s =>
                 s.Categories.Select(e => string.Equals(e.Id, categoryId, StringComparison.InvariantCultureIgnoreCase))
-                    .First(), out var video))
-
+                    .First());
+            if (video == null)
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
-
-            return dtoVideo;
+            return video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
         }
 
         /// <inheritdoc/>
-        public List<VideoSmallModel> Get_ByStudio_SmallModel(string studioId)
+        public async Task<List<VideoSmallModel>> Get_ByStudio_SmallModel(string studioId)
         {
             if (studioId == null)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
-
-            if (!VidoIsInDb(s => string.Equals(s.Studio.Id, studioId, StringComparison.InvariantCultureIgnoreCase),
-                    out var video))
+            var video = await _uow.VideoRepository.Find(
+                s => string.Equals(s.Studio.Id, studioId, StringComparison.InvariantCultureIgnoreCase));
+            if (video == null)
                 //TODO Вернуть экс с пояснением что такого видео нет.(Или проверять на Фронте).
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var dtoVideo = video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
-
-            return dtoVideo;
+            return video.Select(s => _mapper.Map<VideoSmallModel>(s)).ToList();
         }
 
         /// <inheritdoc/>
-        public VideoSmallModel GetRandom_SmallModel()
+        public async Task<VideoSmallModel> GetRandom_SmallModel()
         {
-            var dbVideo = _uow.VideoRepository.GetAll().ToArray();
+            var dbVideo = await _uow.VideoRepository.GetAll();
 
-            if (dbVideo.Length == 0)
+            if (dbVideo.Count == 0)
                 throw new NullReferenceException();//RequestedResourceNotFoundException();
 
-            var video = dbVideo[new Random().Next(0, dbVideo.Length)];
+            var video = dbVideo[new Random().Next(0, dbVideo.Count)];
 
             return _mapper.Map<VideoDb, VideoSmallModel>(video);
         }
@@ -214,7 +202,7 @@ namespace Legendary.Business.Services
 
         private bool VidoIsInDb(Predicate<VideoDb> condition, out IEnumerable<VideoDb> video)
         {
-            video = _uow.VideoRepository.Find(condition);
+            video = _uow.VideoRepository.Find(condition).Result;
             return video.Any();
         }
     }

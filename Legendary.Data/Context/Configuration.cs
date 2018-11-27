@@ -19,6 +19,8 @@ namespace Legendary.Data.Context
                 .WithMany(c => c.Video);
             HasMany(p => p.Rating)
                 .WithRequired(m => m.Video);
+            HasRequired(r => r.Creator)
+                .WithMany(/*m => m.VideoAdded*/);
 
             Property(p => p.Name).IsRequired().HasMaxLength(100).IsUnicode();
             Property(p => p.ReferenceOnVideo).IsRequired();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
@@ -17,37 +18,43 @@ namespace Legendary.Data.Repositories
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<CategoryDb> GetAll()
+        public async Task<List<CategoryDb>> GetAll()
         {
-            return _legendaryContext.Categories.ToList();
+            return await _legendaryContext.Categories.ToListAsync();
         }
 
-        public CategoryDb Get(string id)
+        public async Task<CategoryDb> Get(string id)
         {
-            return _legendaryContext.Categories.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
+            return await _legendaryContext.Categories.FirstAsync(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
-
-        public IEnumerable<CategoryDb> Find(Predicate<CategoryDb> predicate)
+        
+        public async Task<List<CategoryDb>> Find(Predicate<CategoryDb> predicate)
         {
             var condition = new Func<CategoryDb, bool>(predicate);
-            return _legendaryContext.Categories.Where(condition).ToList();
+            return await Task.Run(() => _legendaryContext.Categories.Where(condition).ToList());
         }
 
-        public void Create(CategoryDb category)
+        public async Task Create(CategoryDb category)
         {
             _legendaryContext.Categories.Add(category);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(CategoryDb category)
+        public async Task Update(CategoryDb category)
         {
             _legendaryContext.Entry(category).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var category = _legendaryContext.Categories.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
+            var category = await _legendaryContext.Categories.FirstAsync(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (category != null)
                 _legendaryContext.Categories.Remove(category);
+
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

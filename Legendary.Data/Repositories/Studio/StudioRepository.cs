@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Studio;
@@ -16,39 +17,42 @@ namespace Legendary.Data.Repositories.Studio
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<StudioDb> GetAll()
+        public async Task<List<StudioDb>> GetAll()
         {
-            return _legendaryContext.Studio;
+            return await _legendaryContext.Studio.ToListAsync();
         }
 
-        public StudioDb Get(string id)
+        public async Task<StudioDb> Get(string id)
         {
-            return _legendaryContext.Studio.First(e =>
+            return await _legendaryContext.Studio.FirstAsync(e =>
                 string.Equals(e.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<StudioDb> Find(Predicate<StudioDb> predicate)
+        public async Task<List<StudioDb>> Find(Predicate<StudioDb> predicate)
         {
             var condition = new Func<StudioDb, bool>(predicate);
-            return _legendaryContext.Studio.Where(condition).ToList();
+            return await Task.Run(() => _legendaryContext.Studio.Where(condition).ToList());
         }
 
-        public void Create(StudioDb item)
+        public async Task Create(StudioDb item)
         {
             _legendaryContext.Studio.Add(item);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(StudioDb item)
+        public async Task Update(StudioDb item)
         {
             _legendaryContext.Entry(item).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var studio = _legendaryContext.Studio.First(f =>
+            var studio = await _legendaryContext.Studio.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (studio != null)
                 _legendaryContext.Studio.Remove(studio);
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

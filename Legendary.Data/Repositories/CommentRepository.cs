@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Video;
@@ -17,38 +18,44 @@ namespace Legendary.Data.Repositories
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<CommentDb> GetAll()
+        public async Task<List<CommentDb>> GetAll()
         {
-            return _legendaryContext.Comments.ToList();
+            return await _legendaryContext.Comments.ToListAsync();
         }
 
-        public CommentDb Get(string id)
+        public async Task<CommentDb> Get(string id)
         {
-            return _legendaryContext.Comments.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
+            return await _legendaryContext.Comments.FirstAsync(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<CommentDb> Find(Predicate<CommentDb> predicate)
+        public async Task<List<CommentDb>> Find(Predicate<CommentDb> predicate)
         {
             var condition = new Func<CommentDb, bool>(predicate);
-            return _legendaryContext.Comments.Where(condition).ToList();
+            return await Task.Run(() => _legendaryContext.Comments.Where(condition).ToList());
         }
 
-        public void Create(CommentDb comment)
+        public async Task Create(CommentDb comment)
         {
+            comment.Id = Guid.NewGuid().ToString();
             comment.DateCreate = DateTime.Now;
             _legendaryContext.Comments.Add(comment);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(CommentDb comment)
+        public async Task Update(CommentDb comment)
         {
             _legendaryContext.Entry(comment).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
-            var comment = _legendaryContext.Comments.First(f => string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
+            var comment = await _legendaryContext.Comments.FirstAsync(f =>
+                string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (comment != null)
                 _legendaryContext.Comments.Remove(comment);
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

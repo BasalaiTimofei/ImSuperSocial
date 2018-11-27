@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Country;
@@ -16,40 +17,45 @@ namespace Legendary.Data.Repositories
             _legendaryContext = legendaryContext;
         }
 
-        public IEnumerable<CountryDb> GetAll()
+        public async Task<List<CountryDb>> GetAll()
         {
-            return _legendaryContext.Country;
+            return await _legendaryContext.Country.ToListAsync();
         }
 
-        public CountryDb Get(string id)
+        public async Task<CountryDb> Get(string id)
         {
-            return _legendaryContext.Country.First(f =>
+            return await _legendaryContext.Country.FirstAsync(f =>
                 string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public IEnumerable<CountryDb> Find(Predicate<CountryDb> predicate)
+        public async Task<List<CountryDb>> Find(Predicate<CountryDb> predicate)
         {
             var condition = new Func<CountryDb, bool>(predicate);
-            return _legendaryContext.Country.Where(condition).ToList();
+            return await Task.Run(() =>  _legendaryContext.Country.Where(condition).ToList());
         }
 
-        public void Create(CountryDb item)
+        public async Task Create(CountryDb item)
         {
+            item.Id = Guid.NewGuid().ToString();
             _legendaryContext.Country.Add(item);
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Update(CountryDb item)
+        public async Task Update(CountryDb item)
         {
             _legendaryContext.Entry(item).State = EntityState.Modified;
+            await _legendaryContext.SaveChangesAsync();
         }
 
-        public void Delete(string id)
+        public async Task Delete(string id)
         {
             var coutry =
-                _legendaryContext.Country.First(f =>
+                await _legendaryContext.Country.FirstAsync(f =>
                     string.Equals(f.Id, id, StringComparison.InvariantCultureIgnoreCase));
             if (coutry != null)
                 _legendaryContext.Country.Remove(coutry);
+
+            await _legendaryContext.SaveChangesAsync();
         }
     }
 }

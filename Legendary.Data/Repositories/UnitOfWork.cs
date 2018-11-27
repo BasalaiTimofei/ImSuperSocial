@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Legendary.Data.Context;
 using Legendary.Data.Interfaces;
 using Legendary.Data.Models.Actor;
@@ -88,9 +89,9 @@ namespace Legendary.Data.Repositories
             }
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _legendaryContext.SaveChanges();
+            await _legendaryContext.SaveChangesAsync();
         }
 
         public virtual void Dispose(bool disposing)
